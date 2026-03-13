@@ -7,317 +7,672 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ════════════════════════════════════════ RESET */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
-:root{
-  --bg:#0c0c10;--bg2:#111116;--surface:#18181f;--surface2:#1f1f28;--surface3:#272732;
-  --border:#2c2c3a;--border2:#3a3a4e;--text:#ede8e0;--text2:#9e98b0;--text3:#5a566a;
-  --gold:#e9b949;--gold2:#f5d070;--gold-glow:rgba(233,185,73,0.15);--gold-dim:rgba(233,185,73,0.08);
-  --green:#3ec77a;--red:#e05a5a;--blue:#5294e8;--purple:#a66ef5;--amber:#f59e42;
-  --ff-display:'Fraunces',Georgia,serif;--ff-ui:'DM Sans',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
-  --r:12px;--r2:18px;--sh:0 8px 48px rgba(0,0,0,0.5);--ease:cubic-bezier(0.4,0,0.2,1);
-}
-body{background:var(--bg);color:var(--text);font-family:var(--ff-ui);display:flex;flex-direction:column}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.6}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
-/* ── TOPBAR ── */
-.topbar{display:flex;align-items:center;gap:14px;padding:11px 22px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;position:relative;z-index:50;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+/* ════════════════════════════════════════ DESIGN TOKENS */
+:root{
+  --bg:        #0c0c10;
+  --bg2:       #111116;
+  --surface:   #18181f;
+  --surface2:  #1f1f28;
+  --surface3:  #272732;
+  --border:    #2c2c3a;
+  --border2:   #3a3a4e;
+  --text:      #ede8e0;
+  --text2:     #9e98b0;
+  --text3:     #5a566a;
+  --gold:      #e9b949;
+  --gold2:     #f5d070;
+  --gold-glow: rgba(233,185,73,0.15);
+  --gold-dim:  rgba(233,185,73,0.08);
+  --green:     #3ec77a;
+  --red:       #e05a5a;
+  --blue:      #5294e8;
+  --purple:    #a66ef5;
+  --amber:     #f59e42;
+
+  --ff-display: 'Fraunces', Georgia, serif;
+  --ff-ui:      'DM Sans', system-ui, sans-serif;
+  --ff-mono:    'JetBrains Mono', monospace;
+
+  --r:  12px;
+  --r2: 18px;
+  --r3: 24px;
+  --sh: 0 8px 48px rgba(0,0,0,0.5);
+  --sh-gold: 0 0 48px rgba(233,185,73,0.12);
+  --ease: cubic-bezier(0.4,0,0.2,1);
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--ff-ui);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ambient noise texture */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.6;
+}
+
+/* ════════════════════════════════════════ SCROLLBAR */
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text3)}
+
+/* ════════════════════════════════════════ TOPBAR */
+.topbar{
+  display:flex;align-items:center;gap:14px;
+  padding:11px 22px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;position:relative;z-index:50;
+  box-shadow:0 1px 0 var(--border), 0 4px 24px rgba(0,0,0,0.3);
+}
+
+/* Logo */
 .logo{display:flex;align-items:center;gap:11px;flex-shrink:0}
-.logo-badge{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:10px;display:grid;place-items:center;font-family:var(--ff-display);font-size:20px;font-weight:700;color:#0c0c10;box-shadow:0 4px 18px rgba(233,185,73,0.4);position:relative}
-.logo-badge::after{content:'';position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 60%)}
-.logo-name{font-family:var(--ff-display);font-size:18px;font-weight:600;color:var(--text);letter-spacing:-0.4px;display:block}
-.logo-sub{font-size:9.5px;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;display:block;margin-top:1px}
+.logo-badge{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
+  border-radius:10px;
+  display:grid;place-items:center;
+  font-family:var(--ff-display);font-size:20px;font-weight:700;color:#0c0c10;
+  box-shadow:0 4px 18px rgba(233,185,73,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+  flex-shrink:0;
+  position:relative;
+}
+.logo-badge::after{
+  content:'';position:absolute;inset:0;border-radius:10px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 60%);
+}
+.logo-words{}
+.logo-name{
+  font-family:var(--ff-display);font-size:18px;font-weight:600;
+  color:var(--text);letter-spacing:-0.4px;line-height:1.1;
+  display:block;
+}
+.logo-sub{
+  font-size:9.5px;color:var(--text3);letter-spacing:0.12em;
+  text-transform:uppercase;display:block;margin-top:1px;
+}
+
+/* Divider */
 .topbar-sep{width:1px;height:28px;background:var(--border);flex-shrink:0}
-.level-nav{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px}
-.lvl{padding:5px 14px;border-radius:999px;border:none;font-family:var(--ff-mono);font-size:11px;font-weight:500;color:var(--text3);background:transparent;cursor:pointer;transition:all .22s var(--ease)}
+
+/* Level navigation */
+.level-nav{
+  display:flex;gap:2px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:3px;
+}
+.lvl{
+  padding:5px 14px;border-radius:999px;border:none;
+  font-family:var(--ff-mono);font-size:11px;font-weight:500;
+  color:var(--text3);background:transparent;cursor:pointer;
+  transition:all 0.22s var(--ease);letter-spacing:0.04em;
+}
 .lvl:hover{color:var(--text);background:var(--surface2)}
-.lvl.on{background:var(--gold);color:#0c0c10;box-shadow:0 2px 12px rgba(233,185,73,0.45);font-weight:600}
+.lvl.on{
+  background:var(--gold);color:#0c0c10;
+  box-shadow:0 2px 12px rgba(233,185,73,0.45);
+  font-weight:600;
+}
+
+/* Right section */
 .topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
-.api-wrap{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:7px 12px;transition:border-color .2s}
+
+.api-wrap{
+  display:flex;align-items:center;gap:7px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:7px 12px;
+  transition:border-color 0.2s;
+}
 .api-wrap:focus-within{border-color:rgba(233,185,73,0.5)}
-.api-dot{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0;transition:all .4s}
-.api-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green)}
-.api-input{background:none;border:none;outline:none;font-family:var(--ff-mono);font-size:11px;color:var(--text);width:185px}
+.api-status-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--red);flex-shrink:0;
+  transition:background 0.4s, box-shadow 0.4s;
+}
+.api-status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green)}
+.api-input{
+  background:none;border:none;outline:none;
+  font-family:var(--ff-mono);font-size:11px;color:var(--text);
+  width:185px;
+}
 .api-input::placeholder{color:var(--text3)}
-.btn-save{padding:7px 15px;background:var(--gold);border:none;border-radius:9px;font-family:var(--ff-ui);font-size:11.5px;font-weight:600;color:#0c0c10;cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 2px 10px rgba(233,185,73,0.3)}
-.btn-save:hover{background:var(--gold2);transform:translateY(-1px)}
-.icon-btn{width:36px;height:36px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:grid;place-items:center;cursor:pointer;font-size:15px;transition:all .18s;color:var(--text2);flex-shrink:0}
+.btn-save{
+  padding:7px 15px;
+  background:var(--gold);border:none;border-radius:9px;
+  font-family:var(--ff-ui);font-size:11.5px;font-weight:600;
+  color:#0c0c10;cursor:pointer;
+  transition:all 0.2s;white-space:nowrap;
+  box-shadow:0 2px 10px rgba(233,185,73,0.3);
+}
+.btn-save:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(233,185,73,0.4)}
+
+.icon-btn{
+  width:36px;height:36px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:9px;display:grid;place-items:center;
+  cursor:pointer;font-size:15px;transition:all 0.18s;
+  color:var(--text2);flex-shrink:0;
+}
 .icon-btn:hover{border-color:var(--gold);background:var(--gold-dim);color:var(--gold)}
 
-/* ── PROGRESS ── */
-.prog-strip{height:2px;background:var(--border);flex-shrink:0;position:relative}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1.4s var(--ease);position:relative}
-.prog-fill::after{content:'';position:absolute;right:0;top:-2px;width:6px;height:6px;border-radius:50%;background:var(--gold2);box-shadow:0 0 8px var(--gold2)}
+/* ════════════════════════════════════════ PROGRESS STRIP */
+.progress-strip{height:2px;background:var(--border);flex-shrink:0;position:relative;overflow:visible}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  transition:width 1.4s var(--ease);
+  position:relative;
+}
+.progress-fill::after{
+  content:'';position:absolute;right:0;top:-2px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold2);
+  box-shadow:0 0 8px var(--gold2);
+}
 
-/* ── LAYOUT ── */
+/* ════════════════════════════════════════ MAIN LAYOUT */
 .app{flex:1;display:flex;overflow:hidden;position:relative;z-index:1}
 
-/* ── SIDEBAR ── */
-.sidebar{width:226px;min-width:226px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:14px 10px;gap:3px;overflow-y:auto;flex-shrink:0}
-.sidebar-label{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);padding:10px 10px 5px;display:flex;align-items:center;gap:6px}
+/* ════════════════════════════════════════ SIDEBAR */
+.sidebar{
+  width:226px;min-width:226px;
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  padding:14px 10px 14px;gap:3px;
+  overflow-y:auto;flex-shrink:0;
+}
+
+.sidebar-label{
+  font-size:9px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text3);padding:10px 10px 5px;
+  display:flex;align-items:center;gap:6px;
+}
 .sidebar-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.mcard{border-radius:var(--r);border:1px solid transparent;padding:11px 13px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:all .2s var(--ease);position:relative;overflow:hidden;background:transparent}
-.mcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--mc,var(--gold));border-radius:3px 0 0 3px;opacity:0;transition:opacity .2s}
+
+.mcard{
+  border-radius:var(--r);border:1px solid transparent;
+  padding:11px 13px;cursor:pointer;
+  display:flex;align-items:flex-start;gap:10px;
+  transition:all 0.2s var(--ease);position:relative;overflow:hidden;
+  background:transparent;
+}
+.mcard::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--mc,var(--gold));border-radius:3px 0 0 3px;
+  opacity:0;transition:opacity 0.2s;
+}
 .mcard:hover{background:var(--surface);border-color:var(--border)}
 .mcard:hover::before{opacity:0.5}
 .mcard.on{background:var(--surface);border-color:var(--border2)}
 .mcard.on::before{opacity:1}
-.mcard-icon{font-size:19px;flex-shrink:0;margin-top:1px}
+
+.mcard-icon{font-size:19px;flex-shrink:0;margin-top:1px;line-height:1}
+.mcard-body{flex:1;min-width:0}
 .mcard-name{font-size:12.5px;font-weight:500;color:var(--text);display:block;line-height:1.3}
-.mcard-desc{font-size:10px;color:var(--text3);margin-top:2px;display:block}
-.sidebar-stats{margin-top:auto;border-top:1px solid var(--border);padding:12px 10px 0;display:flex;flex-direction:column;gap:5px}
-.sstat{display:flex;justify-content:space-between;align-items:center}
+.mcard-desc{font-size:10px;color:var(--text3);margin-top:2px;display:block;line-height:1.4}
+
+/* Sidebar stats */
+.sidebar-stats{
+  margin-top:auto;border-top:1px solid var(--border);
+  padding:12px 10px 0;display:flex;flex-direction:column;gap:5px;
+}
+.sstat{display:flex;justify-content:space-between;align-items:center;padding:2px 0}
 .sstat-label{font-size:10px;color:var(--text3)}
 .sstat-val{font-family:var(--ff-mono);font-size:11px;color:var(--gold)}
 
-/* ── CHAT COLUMN ── */
+/* ════════════════════════════════════════ CHAT COLUMN */
 .chat-col{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.mode-bar{padding:10px 22px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap}
+
+/* Mode header */
+.mode-bar{
+  padding:10px 22px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;flex-shrink:0;
+  flex-wrap:wrap;
+}
 .mode-icon-lg{font-size:22px;line-height:1;flex-shrink:0}
+.mode-text{}
 .mode-title{font-size:14px;font-weight:600;color:var(--text);display:block;font-family:var(--ff-display)}
 .mode-subtitle{font-size:11px;color:var(--text3);display:block;margin-top:1px}
 .mode-bar-right{margin-left:auto;display:flex;align-items:center;gap:7px}
-.src-pill{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:5px 12px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .18s}
+
+.src-pill{
+  display:flex;align-items:center;gap:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:999px;padding:5px 12px;
+  font-size:11px;color:var(--text2);cursor:pointer;
+  transition:all 0.18s;
+}
 .src-pill:hover{border-color:var(--gold);color:var(--text)}
-.src-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
-.subbar{padding:7px 22px;background:rgba(17,17,22,0.7);border-bottom:1px solid var(--border);display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0}
-.subbtn{padding:4px 13px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:var(--ff-ui);font-size:11px;color:var(--text3);cursor:pointer;transition:all .16s}
+.src-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* Sub-mode row */
+.subbar{
+  padding:7px 22px;
+  background:rgba(17,17,22,0.7);
+  border-bottom:1px solid var(--border);
+  display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0;
+}
+.subbtn{
+  padding:4px 13px;border-radius:999px;
+  border:1px solid var(--border);background:transparent;
+  font-family:var(--ff-ui);font-size:11px;color:var(--text3);
+  cursor:pointer;transition:all 0.16s;
+}
 .subbtn:hover{color:var(--text);border-color:var(--border2)}
 .subbtn.on{background:var(--surface2);color:var(--text);border-color:var(--border2)}
 
-/* ── CHAT ── */
-.chat-win{flex:1;overflow-y:auto;padding:26px 24px 14px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
-.home{margin:auto;display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 20px;max-width:600px;animation:fadeUp .5s var(--ease)}
+/* ════════════════════════════════════════ CHAT WINDOW */
+.chat-win{
+  flex:1;overflow-y:auto;
+  padding:26px 24px 14px;
+  display:flex;flex-direction:column;
+  gap:14px;scroll-behavior:smooth;
+}
+
+/* ── Home / Welcome ── */
+.home{
+  margin:auto;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:32px 20px;max-width:600px;
+  animation:fadeUp 0.5s var(--ease);
+}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.home-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:480px;height:280px;background:radial-gradient(ellipse,rgba(233,185,73,0.07) 0%,transparent 70%);pointer-events:none}
-.home-emblem{width:80px;height:80px;background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border2);border-radius:22px;display:grid;place-items:center;font-size:40px;margin-bottom:22px;box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:gentleFloat 5s ease-in-out infinite}
+
+.home-glow{
+  position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:480px;height:280px;
+  background:radial-gradient(ellipse,rgba(233,185,73,0.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.home-emblem{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,var(--surface2),var(--surface3));
+  border:1px solid var(--border2);border-radius:22px;
+  display:grid;place-items:center;font-size:40px;
+  margin-bottom:22px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+  animation:gentleFloat 5s ease-in-out infinite;
+}
 @keyframes gentleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.home-title{font-family:var(--ff-display);font-size:38px;font-weight:600;color:var(--text);letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+
+.home-title{
+  font-family:var(--ff-display);font-size:38px;font-weight:600;
+  color:var(--text);letter-spacing:-1px;line-height:1.1;margin-bottom:8px;
+}
 .home-title em{color:var(--gold);font-style:normal}
-.home-sub{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:30px;max-width:440px}
-.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-bottom:28px}
-.hcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 14px;text-align:left;cursor:pointer;transition:all .22s var(--ease);animation:fadeUp .5s var(--ease) both;position:relative;overflow:hidden}
-.hcard::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--hc,var(--gold)),transparent 60%);opacity:0;transition:opacity .22s}
-.hcard:hover{border-color:var(--hc,var(--gold));transform:translateY(-3px);box-shadow:0 0 48px rgba(233,185,73,0.12)}
-.hcard:hover::after{opacity:0.06}
-.hcard:nth-child(1){animation-delay:.08s;--hc:var(--gold)}
-.hcard:nth-child(2){animation-delay:.14s;--hc:var(--blue)}
-.hcard:nth-child(3){animation-delay:.20s;--hc:var(--purple)}
-.hcard:nth-child(4){animation-delay:.26s;--hc:var(--green)}
-.hcard:nth-child(5){animation-delay:.32s;--hc:var(--red)}
-.hcard:nth-child(6){animation-delay:.38s;--hc:var(--amber)}
+.home-sub{
+  font-size:14px;color:var(--text2);line-height:1.75;
+  margin-bottom:30px;max-width:440px;
+}
+
+.home-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  width:100%;margin-bottom:28px;
+}
+.hcard{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px 14px;text-align:left;
+  cursor:pointer;transition:all 0.22s var(--ease);
+  animation:fadeUp 0.5s var(--ease) both;
+  position:relative;overflow:hidden;
+}
+.hcard::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--hc,var(--gold))12,transparent 60%);
+  opacity:0;transition:opacity 0.22s;
+}
+.hcard:hover{border-color:var(--hc,var(--gold));transform:translateY(-3px);box-shadow:var(--sh-gold)}
+.hcard:hover::after{opacity:1}
+.hcard:nth-child(1){animation-delay:0.08s;--hc:var(--gold)}
+.hcard:nth-child(2){animation-delay:0.14s;--hc:var(--blue)}
+.hcard:nth-child(3){animation-delay:0.20s;--hc:var(--purple)}
+.hcard:nth-child(4){animation-delay:0.26s;--hc:var(--green)}
+.hcard:nth-child(5){animation-delay:0.32s;--hc:var(--red)}
+.hcard:nth-child(6){animation-delay:0.38s;--hc:var(--amber)}
 .hcard-icon{font-size:26px;margin-bottom:9px;display:block;position:relative;z-index:1}
 .hcard-name{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:3px;position:relative;z-index:1}
 .hcard-desc{font-size:10.5px;color:var(--text3);line-height:1.5;position:relative;z-index:1}
-.begin-btn{padding:13px 38px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:var(--r);font-family:var(--ff-display);font-size:15px;font-weight:600;color:#0c0c10;cursor:pointer;box-shadow:0 6px 28px rgba(233,185,73,0.4);transition:all .22s}
+
+.begin-btn{
+  padding:13px 38px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none;border-radius:var(--r);
+  font-family:var(--ff-display);font-size:15px;font-weight:600;
+  color:#0c0c10;cursor:pointer;letter-spacing:0.01em;
+  box-shadow:0 6px 28px rgba(233,185,73,0.4);
+  transition:all 0.22s;
+}
 .begin-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(233,185,73,0.52)}
 
-/* ── MESSAGES ── */
-.msg{display:flex;gap:10px;max-width:840px;animation:fadeUp .26s var(--ease)}
+/* ── Messages ── */
+.msg{display:flex;gap:10px;max-width:840px;animation:fadeUp 0.26s var(--ease)}
 .msg.user{align-self:flex-end;flex-direction:row-reverse;max-width:640px}
-.avatar{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:15px;flex-shrink:0;margin-top:3px;border:1px solid var(--border);background:var(--surface2)}
-.msg.bot .avatar{background:linear-gradient(135deg,rgba(233,185,73,0.15),rgba(233,185,73,0.05));border-color:rgba(233,185,73,0.2)}
-.bubble{padding:12px 16px;border-radius:14px;font-size:14.5px;line-height:1.8}
-.msg.bot .bubble{background:var(--surface);border:1px solid var(--border);border-top-left-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
-.msg.user .bubble{background:var(--surface2);border:1px solid var(--border2);border-top-right-radius:4px}
+
+.avatar{
+  width:32px;height:32px;border-radius:9px;
+  display:grid;place-items:center;font-size:15px;
+  flex-shrink:0;margin-top:3px;
+  border:1px solid var(--border);background:var(--surface2);
+}
+.msg.bot .avatar{
+  background:linear-gradient(135deg,rgba(233,185,73,0.15),rgba(233,185,73,0.05));
+  border-color:rgba(233,185,73,0.2);
+}
+
+.bubble{
+  padding:12px 16px;border-radius:14px;
+  font-size:14.5px;line-height:1.8;
+  font-family:var(--ff-ui);
+}
+.msg.bot .bubble{
+  background:var(--surface);border:1px solid var(--border);
+  border-top-left-radius:4px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.2);
+}
+.msg.user .bubble{
+  background:var(--surface2);border:1px solid var(--border2);
+  border-top-right-radius:4px;
+}
+
+/* bubble rich text */
 .bubble strong{color:var(--gold);font-weight:600}
-.bubble .vocab{color:var(--gold2);background:rgba(233,185,73,0.1);padding:1px 6px;border-radius:5px;font-weight:600}
-.bubble .tipp{display:block;margin-top:10px;padding:9px 13px;background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:13px;color:var(--text2)}
-.bubble .correct{display:block;margin-top:9px;padding:9px 13px;background:rgba(62,199,122,0.06);border-left:3px solid var(--green);border-radius:0 8px 8px 0;font-size:13px;color:#80e0a8}
-.bubble .choice{display:block;padding:4px 0;color:var(--gold2)}
-.typing{display:flex;gap:10px;animation:fadeUp .26s var(--ease)}
-.typing-bub{background:var(--surface);border:1px solid var(--border);border-radius:14px;border-top-left-radius:4px;padding:14px 18px;display:flex;gap:5px;align-items:center}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--text3);animation:bop 1.3s infinite}
-.dot:nth-child(2){animation-delay:.18s}.dot:nth-child(3){animation-delay:.36s}
+.bubble .vocab{
+  color:var(--gold2);background:rgba(233,185,73,0.1);
+  padding:1px 6px;border-radius:5px;font-weight:600;
+}
+.bubble .tipp{
+  display:block;margin-top:10px;padding:9px 13px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-left:3px solid var(--gold);border-radius:0 8px 8px 0;
+  font-size:13px;color:var(--text2);
+}
+.bubble .correct{
+  display:block;margin-top:9px;padding:9px 13px;
+  background:rgba(62,199,122,0.06);
+  border-left:3px solid var(--green);border-radius:0 8px 8px 0;
+  font-size:13px;color:#80e0a8;
+}
+.bubble .choice{
+  display:block;padding:4px 0;color:var(--gold2);
+}
+
+/* typing */
+.typing{display:flex;gap:10px;animation:fadeUp 0.26s var(--ease)}
+.typing-bub{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;border-top-left-radius:4px;
+  padding:14px 18px;display:flex;gap:5px;align-items:center;
+}
+.dot{
+  width:6px;height:6px;border-radius:50%;background:var(--text3);
+  animation:bop 1.3s infinite;
+}
+.dot:nth-child(2){animation-delay:0.18s}
+.dot:nth-child(3){animation-delay:0.36s}
 @keyframes bop{0%,75%,100%{transform:translateY(0);opacity:0.3}38%{transform:translateY(-7px);opacity:1}}
 
-/* ── CHIPS ── */
-.chips-row{padding:8px 22px;border-top:1px solid var(--border);background:var(--bg2);display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0}
-.chip{padding:5px 13px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:11px;color:var(--text3);cursor:pointer;transition:all .15s}
+/* ════════════════════════════════════════ QUICK CHIPS */
+.chips-row{
+  padding:8px 22px;
+  border-top:1px solid var(--border);
+  background:var(--bg2);
+  display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0;
+}
+.chip{
+  padding:5px 13px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface);
+  font-size:11px;color:var(--text3);
+  cursor:pointer;font-family:var(--ff-ui);
+  transition:all 0.15s;
+}
 .chip:hover{border-color:var(--gold);color:var(--text);background:var(--gold-dim)}
 
-/* ── INPUT ── */
-.input-zone{padding:12px 22px 15px;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0}
+/* ════════════════════════════════════════ INPUT */
+.input-zone{
+  padding:12px 22px 15px;
+  background:var(--bg2);border-top:1px solid var(--border);
+  flex-shrink:0;
+}
 .input-row{display:flex;gap:8px;align-items:flex-end}
-.input-shell{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;display:flex;align-items:flex-end;padding:4px 4px 4px 16px;transition:border-color .2s,box-shadow .2s}
-.input-shell:focus-within{border-color:rgba(233,185,73,0.5);box-shadow:0 0 0 3px rgba(233,185,73,0.06)}
-#msgInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--ff-ui);font-size:14.5px;resize:none;line-height:1.65;padding:9px 0;max-height:130px;overflow-y:auto}
+.input-shell{
+  flex:1;background:var(--surface);border:1.5px solid var(--border);
+  border-radius:14px;display:flex;align-items:flex-end;
+  padding:4px 4px 4px 16px;
+  transition:border-color 0.2s, box-shadow 0.2s;
+}
+.input-shell:focus-within{
+  border-color:rgba(233,185,73,0.5);
+  box-shadow:0 0 0 3px rgba(233,185,73,0.06);
+}
+#msgInput{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-family:var(--ff-ui);font-size:14.5px;
+  resize:none;line-height:1.65;padding:9px 0;
+  max-height:130px;overflow-y:auto;
+}
 #msgInput::placeholder{color:var(--text3)}
-.send{width:44px;height:44px;background:var(--gold);border:none;border-radius:11px;color:#0c0c10;cursor:pointer;display:grid;place-items:center;transition:all .18s;flex-shrink:0;box-shadow:0 3px 14px rgba(233,185,73,0.35)}
+.send{
+  width:44px;height:44px;
+  background:var(--gold);border:none;border-radius:11px;
+  color:#0c0c10;cursor:pointer;
+  display:grid;place-items:center;
+  transition:all 0.18s;flex-shrink:0;
+  box-shadow:0 3px 14px rgba(233,185,73,0.35);
+}
 .send:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 22px rgba(233,185,73,0.5)}
 .send:disabled{opacity:0.25;cursor:not-allowed;transform:none}
 
-/* ══════════════════════════════════════════════════════
-   NEWS CARD SLIDER
-══════════════════════════════════════════════════════ */
-.news-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-
-/* Top bar inside news panel */
-.news-topbar{
-  padding:12px 22px;background:var(--surface);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;
+/* ════════════════════════════════════════ SOURCE DRAWER */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);
+  z-index:200;opacity:0;pointer-events:none;
+  transition:opacity 0.3s var(--ease);
+  backdrop-filter:blur(2px);
 }
-.news-topbar-title{font-family:var(--ff-display);font-size:15px;font-weight:600;color:var(--text)}
-.news-topbar-sub{font-size:11px;color:var(--text3);margin-left:4px}
-.news-refresh-btn{
-  margin-left:auto;display:flex;align-items:center;gap:6px;
-  padding:6px 14px;background:var(--surface2);border:1px solid var(--border);
-  border-radius:999px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .18s;
+.overlay.open{opacity:1;pointer-events:all}
+
+.drawer{
+  position:fixed;top:0;right:-460px;bottom:0;width:440px;
+  background:var(--bg2);border-left:1px solid var(--border);
+  z-index:201;transition:right 0.38s var(--ease);
+  display:flex;flex-direction:column;
+  box-shadow:-12px 0 60px rgba(0,0,0,0.5);
 }
-.news-refresh-btn:hover{border-color:var(--gold);color:var(--gold)}
-.news-refresh-btn.spinning svg{animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+.drawer.open{right:0}
 
-/* Feed selector pills */
-.feed-pills{padding:8px 22px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0}
-.feed-pill{padding:4px 12px;border-radius:999px;border:1px solid var(--border);background:transparent;font-size:11px;color:var(--text3);cursor:pointer;transition:all .16s;display:flex;align-items:center;gap:5px}
-.feed-pill:hover{color:var(--text);border-color:var(--border2)}
-.feed-pill.on{background:var(--gold-dim);color:var(--gold);border-color:rgba(233,185,73,0.4)}
-.feed-pill-lang{font-family:var(--ff-mono);font-size:9px;opacity:0.6}
-
-/* Card slider track */
-.slider-track{flex:1;overflow:hidden;position:relative}
-.slider-inner{display:flex;height:100%;transition:transform .45s var(--ease)}
-.news-card{
-  min-width:100%;height:100%;display:flex;flex-direction:column;
-  padding:28px 28px 16px;overflow-y:auto;
+.drawer-top{
+  padding:20px 22px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
 }
-
-/* Card header */
-.nc-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.nc-source{
-  font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
-  color:var(--gold);padding:3px 10px;background:var(--gold-dim);
-  border:1px solid rgba(233,185,73,0.25);border-radius:999px;font-family:var(--ff-mono);
+.drawer-title{
+  font-family:var(--ff-display);font-size:17px;font-weight:600;color:var(--text);
 }
-.nc-topic{font-size:10px;color:var(--text3);padding:3px 10px;background:var(--surface);border:1px solid var(--border);border-radius:999px}
-.nc-time{font-size:10px;color:var(--text3);margin-left:auto}
-.nc-headline{font-family:var(--ff-display);font-size:24px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:10px;letter-spacing:-0.4px}
-.nc-headline-de{font-family:var(--ff-display);font-size:18px;font-weight:300;color:var(--gold2);line-height:1.4;margin-bottom:18px;font-style:italic;border-left:3px solid var(--gold);padding-left:14px}
-.nc-summary{font-size:14px;color:var(--text2);line-height:1.85;margin-bottom:20px;max-width:720px}
-.nc-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--blue);text-decoration:none;margin-bottom:20px;transition:color .18s}
-.nc-link:hover{color:var(--gold)}
-
-/* German lesson block */
-.nc-lesson{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
-  padding:18px 20px;margin-bottom:16px;max-width:720px;
-}
-.nc-lesson-title{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.nc-lesson-title::after{content:'';flex:1;height:1px;background:rgba(233,185,73,0.2)}
-.vocab-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.vocab-tag{padding:6px 12px;background:rgba(233,185,73,0.08);border:1px solid rgba(233,185,73,0.2);border-radius:8px;font-size:12px}
-.vocab-tag strong{color:var(--gold2);font-family:var(--ff-mono)}
-.vocab-tag span{color:var(--text3)}
-.nc-sentences{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-.nc-sent{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--surface2);border-radius:9px;border:1px solid var(--border)}
-.nc-sent-num{font-family:var(--ff-mono);font-size:10px;color:var(--text3);padding-top:2px;flex-shrink:0;min-width:16px}
-.nc-sent-text{font-size:13.5px;color:var(--text);line-height:1.7}
-.nc-question-list{display:flex;flex-direction:column;gap:6px}
-.nc-q{font-size:13px;color:var(--text2);padding:8px 12px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--blue)}
-
-/* AI chat within news card */
-.nc-chat{margin-top:auto;border-top:1px solid var(--border);padding-top:14px;max-width:720px}
-.nc-chat-title{font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:500}
-.nc-chat-msgs{display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;margin-bottom:10px}
-.nc-msg{font-size:13px;line-height:1.6;padding:8px 12px;border-radius:10px}
-.nc-msg.bot{background:var(--surface);border:1px solid var(--border);color:var(--text2)}
-.nc-msg.user{background:var(--surface2);border:1px solid var(--border2);color:var(--text);align-self:flex-end;max-width:80%}
-.nc-input-row{display:flex;gap:8px}
-.nc-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:8px 12px;color:var(--text);font-family:var(--ff-ui);font-size:13px;outline:none;transition:border-color .2s}
-.nc-input:focus{border-color:rgba(233,185,73,0.5)}
-.nc-send{padding:8px 16px;background:var(--gold);border:none;border-radius:9px;color:#0c0c10;font-weight:600;font-size:12px;cursor:pointer;transition:all .18s;white-space:nowrap}
-.nc-send:hover{background:var(--gold2)}
-
-/* Nav arrows */
-.slider-nav{
-  position:absolute;bottom:0;left:0;right:0;
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  padding:10px 22px;background:linear-gradient(transparent,var(--bg) 40%);
-  pointer-events:none;
-}
-.slider-nav-inner{display:flex;align-items:center;gap:10px;pointer-events:all}
-.nav-btn{
-  width:38px;height:38px;border-radius:10px;
+.drawer-close{
+  width:30px;height:30px;border-radius:8px;
   background:var(--surface);border:1px solid var(--border);
   display:grid;place-items:center;cursor:pointer;
-  color:var(--text2);font-size:16px;transition:all .18s;
+  color:var(--text2);font-size:16px;transition:all 0.18s;
 }
-.nav-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
-.nav-btn:disabled{opacity:0.25;cursor:not-allowed}
-.nav-counter{font-family:var(--ff-mono);font-size:12px;color:var(--text3);min-width:50px;text-align:center}
-.nav-dots{display:flex;gap:5px;align-items:center}
-.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--border2);cursor:pointer;transition:all .2s}
-.nav-dot.on{background:var(--gold);width:14px;border-radius:999px}
-
-/* Loading state for news */
-.news-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;color:var(--text3)}
-.news-loading-spinner{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
-.news-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;color:var(--text3);text-align:center;padding:40px}
-.news-empty-icon{font-size:40px;margin-bottom:6px}
-.news-empty p{font-size:13px;line-height:1.7;max-width:360px}
-
-/* ── DRAWER ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s var(--ease);backdrop-filter:blur(2px)}
-.overlay.open{opacity:1;pointer-events:all}
-.drawer{position:fixed;top:0;right:-460px;bottom:0;width:440px;background:var(--bg2);border-left:1px solid var(--border);z-index:201;transition:right .38s var(--ease);display:flex;flex-direction:column;box-shadow:-12px 0 60px rgba(0,0,0,0.5)}
-.drawer.open{right:0}
-.drawer-top{padding:20px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.drawer-title{font-family:var(--ff-display);font-size:17px;font-weight:600;color:var(--text)}
-.drawer-close{width:30px;height:30px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;color:var(--text2);font-size:16px;transition:all .18s}
 .drawer-close:hover{border-color:var(--red);color:var(--red)}
+
 .drawer-body{flex:1;overflow-y:auto;padding:18px 22px}
+
+/* Config section */
 .cfg-sec{margin-bottom:22px}
-.cfg-title{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:7px;font-weight:600}
+.cfg-title{
+  font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;font-weight:600;
+}
 .cfg-title::after{content:'';flex:1;height:1px;background:rgba(233,185,73,0.2)}
-.src-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);margin-bottom:5px;cursor:pointer;transition:all .18s}
+
+/* Source checkboxes */
+.src-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--r);
+  background:var(--surface);border:1px solid var(--border);
+  margin-bottom:5px;cursor:pointer;transition:all 0.18s;
+}
 .src-item:hover{border-color:var(--border2)}
 .src-item.on{border-color:rgba(233,185,73,0.5);background:var(--gold-dim)}
-.src-chk{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border2);display:grid;place-items:center;font-size:11px;flex-shrink:0;transition:all .18s}
+.src-chk{
+  width:18px;height:18px;border-radius:5px;
+  border:1.5px solid var(--border2);
+  display:grid;place-items:center;font-size:11px;
+  flex-shrink:0;transition:all 0.18s;background:transparent;
+}
 .src-item.on .src-chk{background:var(--gold);border-color:var(--gold);color:#0c0c10}
+.src-info{flex:1}
 .src-name{font-size:12px;font-weight:500;color:var(--text);display:block}
 .src-note{font-size:10px;color:var(--text3);margin-top:1px;display:block}
-.src-lang{font-size:9px;padding:2px 8px;border-radius:999px;background:var(--surface2);color:var(--text3);border:1px solid var(--border);font-family:var(--ff-mono)}
+.src-lang{
+  font-size:9px;padding:2px 8px;border-radius:999px;
+  background:var(--surface2);color:var(--text3);
+  border:1px solid var(--border);font-family:var(--ff-mono);
+}
+
+/* Slider */
 .slider-wrap{margin-bottom:14px}
 .slider-top{display:flex;justify-content:space-between;margin-bottom:7px;font-size:11px;color:var(--text2)}
 .slider-val{color:var(--gold);font-family:var(--ff-mono);font-weight:600}
-input[type=range]{width:100%;height:3px;background:var(--border);border-radius:999px;outline:none;-webkit-appearance:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--gold);border-radius:50%;cursor:pointer;box-shadow:0 2px 8px rgba(233,185,73,0.5)}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0}
-.toggle-label{font-size:12px;color:var(--text2)}
-.tog{width:36px;height:20px;border-radius:999px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
-.tog.on{background:var(--gold);border-color:var(--gold)}
-.tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--text3);transition:all .2s}
-.tog.on::after{left:18px;background:#0c0c10}
-.cfg-input{width:100%;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:var(--ff-mono);font-size:11px;outline:none;transition:border-color .2s;margin-top:5px}
+input[type=range]{
+  width:100%;height:3px;background:var(--border);
+  border-radius:999px;outline:none;-webkit-appearance:none;cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  background:var(--gold);border-radius:50%;cursor:pointer;
+  box-shadow:0 2px 8px rgba(233,185,73,0.5);
+}
+
+/* Exam source cards */
+.exam-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.exam-card{
+  padding:11px 12px;border-radius:var(--r);
+  background:var(--surface);border:1px solid var(--border);
+  cursor:pointer;transition:all 0.18s;text-align:center;
+}
+.exam-card:hover{border-color:var(--border2)}
+.exam-card.on{border-color:rgba(233,185,73,0.5);background:var(--gold-dim)}
+.exam-card-icon{font-size:22px;margin-bottom:5px;display:block}
+.exam-card-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.exam-card-note{font-size:9.5px;color:var(--text3);line-height:1.4}
+
+/* Text input in drawer */
+.cfg-input{
+  width:100%;padding:9px 12px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:9px;color:var(--text);
+  font-family:var(--ff-mono);font-size:11px;outline:none;
+  transition:border-color 0.2s;margin-top:5px;
+}
 .cfg-input:focus{border-color:rgba(233,185,73,0.5)}
 .cfg-input::placeholder{color:var(--text3)}
-.apply-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:var(--r);font-family:var(--ff-display);font-size:14px;font-weight:600;color:#0c0c10;cursor:pointer;box-shadow:0 4px 18px rgba(233,185,73,0.3);transition:all .2s;margin-top:8px}
+textarea.cfg-input{resize:vertical;min-height:70px;font-family:var(--ff-ui);font-size:12px}
+
+/* Toggle */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 0;
+}
+.toggle-label{font-size:12px;color:var(--text2)}
+.tog{
+  width:36px;height:20px;border-radius:999px;
+  background:var(--surface2);border:1px solid var(--border);
+  cursor:pointer;position:relative;transition:all 0.2s;flex-shrink:0;
+}
+.tog.on{background:var(--gold);border-color:var(--gold)}
+.tog::after{
+  content:'';position:absolute;
+  top:2px;left:2px;width:14px;height:14px;
+  border-radius:50%;background:var(--text3);
+  transition:all 0.2s;
+}
+.tog.on::after{left:18px;background:#0c0c10}
+
+/* Apply btn */
+.apply-btn{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none;border-radius:var(--r);
+  font-family:var(--ff-display);font-size:14px;font-weight:600;
+  color:#0c0c10;cursor:pointer;
+  box-shadow:0 4px 18px rgba(233,185,73,0.3);
+  transition:all 0.2s;margin-top:8px;
+}
 .apply-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(233,185,73,0.42)}
-.info-note{background:rgba(233,185,73,0.06);border:1px solid rgba(233,185,73,0.2);border-radius:var(--r);padding:12px 14px;font-size:11px;color:var(--text3);line-height:1.7;margin-top:8px}
+
+/* Info box in drawer */
+.info-note{
+  background:rgba(233,185,73,0.06);border:1px solid rgba(233,185,73,0.2);
+  border-radius:var(--r);padding:12px 14px;
+  font-size:11px;color:var(--text3);line-height:1.7;margin-top:8px;
+}
 .info-note strong{color:var(--gold)}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px 20px;font-size:13px;color:var(--text);z-index:999;opacity:0;transition:all .3s var(--ease);pointer-events:none;box-shadow:var(--sh);white-space:nowrap}
+/* ════════════════════════════════════════ TOAST */
+.toast{
+  position:fixed;bottom:22px;left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:10px;padding:10px 20px;
+  font-size:13px;color:var(--text);
+  z-index:999;opacity:0;transition:all 0.3s var(--ease);
+  pointer-events:none;box-shadow:var(--sh);white-space:nowrap;
+}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-@media(max-width:900px){.sidebar{width:58px;min-width:58px;padding:12px 7px}.mcard-name,.mcard-desc,.sidebar-label,.sidebar-stats{display:none}.mcard{justify-content:center;padding:11px}.mcard-icon{font-size:20px}}
-@media(max-width:640px){.sidebar{display:none}.topbar{gap:8px;padding:10px 14px}.api-wrap{width:130px}.api-input{width:90px}.chat-win{padding:16px 14px}.home-grid{grid-template-columns:1fr 1fr}.drawer{width:100%}.home-title{font-size:28px}.news-card{padding:18px 16px 16px}}
+/* ════════════════════════════════════════ RESPONSIVE */
+@media(max-width:900px){
+  .sidebar{width:58px;min-width:58px;padding:12px 7px}
+  .mcard-body,.mcard-desc,.sidebar-label,.sidebar-stats{display:none}
+  .mcard{justify-content:center;padding:11px}
+  .mcard-icon{font-size:20px}
+}
+@media(max-width:640px){
+  .sidebar{display:none}
+  .topbar{gap:8px;padding:10px 14px}
+  .level-nav{gap:1px}
+  .lvl{padding:5px 9px;font-size:10px}
+  .api-wrap{width:130px}.api-input{width:90px}
+  .chat-win{padding:16px 14px}
+  .input-zone{padding:10px 14px 13px}
+  .home-grid{grid-template-columns:1fr 1fr}
+  .drawer{width:100%}
+  .home-title{font-size:28px}
+}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
+<!-- ══════════════ TOPBAR -->
 <header class="topbar">
   <div class="logo">
     <div class="logo-badge">D</div>
-    <div>
+    <div class="logo-words">
       <span class="logo-name">DeutschBot</span>
       <span class="logo-sub">AI Language Platform</span>
     </div>
   </div>
+
   <div class="topbar-sep"></div>
+
   <nav class="level-nav" id="levelNav">
     <button class="lvl on" data-lv="A1" onclick="setLevel('A1')">A1</button>
     <button class="lvl" data-lv="A2" onclick="setLevel('A2')">A2</button>
@@ -326,50 +681,79 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
     <button class="lvl" data-lv="C1" onclick="setLevel('C1')">C1</button>
     <button class="lvl" data-lv="C2" onclick="setLevel('C2')">C2</button>
   </nav>
+
   <div class="topbar-right">
     <div class="api-wrap">
-      <div class="api-dot" id="apiDot"></div>
-      <input class="api-input" id="apiIn" type="password" placeholder="Paste Gemini API key…" onkeydown="if(event.key==='Enter')saveKey()"/>
+      <div class="api-status-dot" id="apiDot"></div>
+      <input class="api-input" id="apiIn" type="password"
+        placeholder="Paste Gemini API key…"
+        onkeydown="if(event.key==='Enter')saveKey()"/>
     </div>
     <button class="btn-save" onclick="saveKey()">Save Key</button>
     <div class="icon-btn" onclick="openDrawer()" title="Configure Sources">⚙</div>
   </div>
 </header>
 
-<div class="prog-strip"><div class="prog-fill" id="prog" style="width:5%"></div></div>
+<!-- progress strip -->
+<div class="progress-strip">
+  <div class="progress-fill" id="prog" style="width:5%"></div>
+</div>
 
+<!-- ══════════════ BODY -->
 <div class="app">
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-label">Modes</div>
+
     <div class="mcard on" style="--mc:var(--gold)" data-m="free" onclick="setMode('free')">
       <span class="mcard-icon">💬</span>
-      <div><span class="mcard-name">Free Chat</span><span class="mcard-desc">Open conversation tutor</span></div>
+      <div class="mcard-body">
+        <span class="mcard-name">Free Chat</span>
+        <span class="mcard-desc">Open conversation tutor</span>
+      </div>
     </div>
+
     <div class="mcard" style="--mc:var(--blue)" data-m="news" onclick="setMode('news')">
       <span class="mcard-icon">📰</span>
-      <div><span class="mcard-name">News</span><span class="mcard-desc">Real headlines + lessons</span></div>
+      <div class="mcard-body">
+        <span class="mcard-name">News</span>
+        <span class="mcard-desc">Learn from real headlines</span>
+      </div>
     </div>
+
     <div class="mcard" style="--mc:var(--purple)" data-m="tech" onclick="setMode('tech')">
       <span class="mcard-icon">💻</span>
-      <div><span class="mcard-name">Tech & Science</span><span class="mcard-desc">AI, space, discoveries</span></div>
+      <div class="mcard-body">
+        <span class="mcard-name">Tech & Science</span>
+        <span class="mcard-desc">AI, space, discoveries</span>
+      </div>
     </div>
+
     <div class="mcard" style="--mc:var(--green)" data-m="exam" onclick="setMode('exam')">
       <span class="mcard-icon">📝</span>
-      <div><span class="mcard-name">Exam Practice</span><span class="mcard-desc">Goethe & Telc format</span></div>
+      <div class="mcard-body">
+        <span class="mcard-name">Exam Practice</span>
+        <span class="mcard-desc">Goethe & Telc format</span>
+      </div>
     </div>
+
     <div class="mcard" style="--mc:var(--red)" data-m="game" onclick="setMode('game')">
       <span class="mcard-icon">🎮</span>
-      <div><span class="mcard-name">Story Game</span><span class="mcard-desc">Adventure in German</span></div>
+      <div class="mcard-body">
+        <span class="mcard-name">Story Game</span>
+        <span class="mcard-desc">Adventure in German</span>
+      </div>
     </div>
+
     <div class="mcard" style="--mc:var(--amber)" data-m="vocab" onclick="setMode('vocab')">
       <span class="mcard-icon">📚</span>
-      <div><span class="mcard-name">Vocabulary</span><span class="mcard-desc">Flashcards & word drills</span></div>
+      <div class="mcard-body">
+        <span class="mcard-name">Vocabulary</span>
+        <span class="mcard-desc">Flashcards & word drills</span>
+      </div>
     </div>
-    <div class="mcard" style="--mc:var(--green)" data-m="correct" onclick="setMode('correct')">
-      <span class="mcard-icon">✏️</span>
-      <div><span class="mcard-name">Text Correction</span><span class="mcard-desc">Paste text to fix & learn</span></div>
-    </div>
+
     <div class="sidebar-stats">
       <div class="sstat"><span class="sstat-label">Messages</span><span class="sstat-val" id="stMsgs">0</span></div>
       <div class="sstat"><span class="sstat-label">Level</span><span class="sstat-val" id="stLv">A1</span></div>
@@ -377,13 +761,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
     </div>
   </aside>
 
-  <!-- MAIN CONTENT AREA — swapped by setMode() -->
-  <section class="chat-col" id="mainCol">
+  <!-- CHAT COLUMN -->
+  <section class="chat-col">
 
-    <!-- MODE BAR (hidden in news mode) -->
+    <!-- mode bar -->
     <div class="mode-bar" id="modeBar">
       <span class="mode-icon-lg" id="mIcon">💬</span>
-      <div>
+      <div class="mode-text">
         <span class="mode-title" id="mTitle">Free Conversation</span>
         <span class="mode-subtitle" id="mSub">Chat freely — your AI tutor adapts to your level</span>
       </div>
@@ -396,40 +780,47 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       </div>
     </div>
 
-    <!-- SUBMODE BAR -->
+    <!-- submode bar -->
     <div class="subbar" id="subBar" style="display:none"></div>
 
-    <!-- CHAT WINDOW -->
+    <!-- chat window -->
     <div class="chat-win" id="chatWin">
       <div class="home" id="homeEl">
         <div class="home-glow"></div>
         <div class="home-emblem">🇩🇪</div>
         <h1 class="home-title">Willkommen bei<br><em>DeutschBot</em></h1>
-        <p class="home-sub">Your AI-powered German learning platform. Choose a mode, set your level, paste your Gemini API key — and start learning.</p>
+        <p class="home-sub">Your AI-powered German learning platform. Choose a mode, set your level, paste your free Gemini API key — and start learning.</p>
         <div class="home-grid" id="homeGrid"></div>
         <button class="begin-btn" onclick="begin()">Los geht's — Begin Learning →</button>
       </div>
     </div>
 
-    <!-- CHIPS -->
+    <!-- quick chips -->
     <div class="chips-row" id="chipsRow"></div>
 
-    <!-- INPUT -->
-    <div class="input-zone" id="inputZone">
+    <!-- input -->
+    <div class="input-zone">
       <div class="input-row">
         <div class="input-shell">
-          <textarea id="msgInput" rows="1" placeholder="Schreib hier auf Deutsch oder Englisch…"
-            onkeydown="onKey(event)" oninput="grow(this)"></textarea>
+          <textarea id="msgInput" rows="1"
+            placeholder="Schreib hier auf Deutsch oder Englisch…"
+            onkeydown="onKey(event)"
+            oninput="grow(this)"></textarea>
         </div>
         <button class="send" id="sendBtn" onclick="sendMsg()">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
         </button>
       </div>
     </div>
   </section>
 </div>
 
-<!-- DRAWER -->
+<!-- ══════════════ SOURCE DRAWER -->
 <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-top">
@@ -439,597 +830,382 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
   <div class="drawer-body" id="drawerBody"></div>
 </div>
 
+<!-- toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════ CONSTANTS
-
+// ══════════════════════════════════════════════════════════ DATA
 const LV = {
   A1:{name:'Anfänger',en:'Beginner',prog:5,
-    chips:['Hallo! 👋','Wie heißt du?','Zahlen üben 🔢','Farben lernen 🎨','Einfache Sätze'],
+    chips:['Hallo! 👋','Wie heißt du?','Zahlen üben 🔢','Farben lernen 🎨','Quiz starten 🎯'],
     ph:'Schreib auf Deutsch oder Englisch — ich helfe dir! 😊'},
   A2:{name:'Grundkenntnisse',en:'Elementary',prog:20,
     chips:['Wie komme ich zum Bahnhof?','Beim Arzt 🏥','Im Supermarkt 🛒','Perfekt üben','Modalverben'],
     ph:'Schreib auf Deutsch — Fehler sind okay!'},
   B1:{name:'Mittelstufe',en:'Intermediate',prog:40,
-    chips:['Meine Meinung ist…','Konjunktiv II üben','Über Reisen sprechen','Aktuelles Thema','Redemittel'],
+    chips:['Meine Meinung ist…','Konjunktiv II üben','Über Reisen sprechen','Prüfungsvorbereitung','Aktuelles Thema'],
     ph:'Schreib auf Deutsch — der Tutor korrigiert diskret…'},
   B2:{name:'Oberstufe',en:'Upper Intermediate',prog:60,
-    chips:['Schreibaufgabe geben','Über KI diskutieren','Formellen Brief schreiben','Idiome lernen','B2 Prüfung'],
+    chips:['Schreibaufgabe geben','Über KI diskutieren','Formellen Brief schreiben','Idiome lernen','B2 Prüfung simulieren'],
     ph:'Schreib auf Deutsch — anspruchsvolle Themen willkommen…'},
   C1:{name:'Fortgeschritten',en:'Advanced',prog:80,
     chips:['Konjunktiv I üben','Kafka analysieren','Formeller Aufsatz','Rhetorik besprechen','GDS Vorbereitung'],
     ph:'Akademisches Deutsch — präzise Ausdrucksweise…'},
   C2:{name:'Meisterschaft',en:'Mastery',prog:98,
-    chips:['Dialekt erkennen','Nietzsche diskutieren','Kreatives Schreiben','GDS Simulation','Stilistik'],
+    chips:['Kafka vs. Kafka','Dialekt erkennen','Nietzsche diskutieren','Kreatives Schreiben','GDS Simulation'],
     ph:'Muttersprachliches Niveau — kein Zugeständnis…'},
 };
 
 const MODES = {
-  free: {icon:'💬',title:'Free Conversation',sub:'Chat freely — your AI tutor adapts to your level',src:false,
+  free:{icon:'💬',title:'Free Conversation',sub:'Chat freely — your AI tutor adapts to your level',src:false,
     subs:null},
-  news: {icon:'📰',title:'News & Articles',sub:'Real headlines with German lessons built in',src:true,
-    subs:['World','Politics','Business','Technology','Science','Culture']},
-  tech: {icon:'💻',title:'Tech & Science',sub:'AI, space, technology and discoveries in German',src:true,
+  news:{icon:'📰',title:'News & Articles',sub:'Learn German through real-world headlines',src:true,
+    subs:['World News','Politics','Business','Culture','Society']},
+  tech:{icon:'💻',title:'Tech & Science',sub:'AI, space, technology and discoveries in German',src:true,
     subs:['Technology','Artificial Intelligence','Space & Science','Health','Environment']},
-  exam: {icon:'📝',title:'Exam Practice',sub:'Goethe & Telc format exercises — original questions',src:false,
+  exam:{icon:'📝',title:'Exam Practice',sub:'Goethe & Telc format exercises — original questions',src:true,
     subs:['Leseverstehen','Hörverstehen','Schreiben','Sprechen','Grammatik','Full Mock Test']},
-  game: {icon:'🎮',title:'Story Adventure',sub:'Walk through German environments, learn as you go',src:false,
+  game:{icon:'🎮',title:'Story Adventure',sub:'Walk through German environments, learn as you go',src:false,
     subs:['🏠 Wohnung (A1)','🛒 Supermarkt (A2)','🚂 Bahnhof (B1)','🏢 Büro (B2)','🎓 Universität (C1)','🌆 Stadt bei Nacht (C2)']},
   vocab:{icon:'📚',title:'Vocabulary Builder',sub:'Flashcards, themed lists, word families',src:false,
-    subs:['Flashcard Drill','Themed Lists','Fill-in-the-blank','Word Families']},
-  correct:{icon:'✏️',title:'Text Correction',sub:'Paste any German text — get corrections and explanations',src:false,
-    subs:null},
+    subs:['Flashcard Drill','Themed Lists','Fill-in-the-blank','Word Families','My Saved Words']},
 };
 
-// RSS feeds via allorigins CORS proxy (free, no key needed)
-const RSS_FEEDS = [
-  {id:'dw_en',    name:'Deutsche Welle',  lang:'EN', topic:'World News',  url:'https://rss.dw.com/rdf/rss-en-all'},
-  {id:'dw_de',    name:'DW Deutsch',      lang:'DE', topic:'Nachrichten', url:'https://rss.dw.com/xml/rss-de-all'},
-  {id:'bbc',      name:'BBC World',       lang:'EN', topic:'Global News', url:'https://feeds.bbci.co.uk/news/world/rss.xml'},
-  {id:'guardian', name:'The Guardian',    lang:'EN', topic:'World',       url:'https://www.theguardian.com/world/rss'},
-  {id:'spiegel',  name:'Der Spiegel',     lang:'DE', topic:'Politik',     url:'https://www.spiegel.de/schlagzeilen/index.rss'},
-  {id:'zeit',     name:'Die Zeit',        lang:'DE', topic:'Nachrichten', url:'https://newsfeed.zeit.de/all'},
+const NEWS_SRC = [
+  {id:'dw_en',name:'Deutsche Welle (English)',note:'Germany\'s international broadcaster',lang:'EN'},
+  {id:'dw_de',name:'Deutsche Welle (Deutsch)',note:'DW auf Deutsch — great for B1+',lang:'DE'},
+  {id:'bbc',name:'BBC World News',note:'Global coverage, neutral register',lang:'EN'},
+  {id:'spiegel',name:'Der Spiegel',note:'Germany\'s leading news magazine',lang:'DE'},
+  {id:'zeit',name:'Die Zeit',note:'Quality long-form German journalism',lang:'DE'},
+  {id:'reuters',name:'Reuters',note:'International wire, factual and concise',lang:'EN'},
 ];
-
-const NEWS_SRC = RSS_FEEDS; // alias for drawer
 const TECH_SRC = [
-  {id:'hn',   name:'Hacker News',  lang:'EN', topic:'Tech',    url:'https://hnrss.org/frontpage'},
-  {id:'nasa', name:'NASA News',    lang:'EN', topic:'Space',   url:'https://www.nasa.gov/rss/dyn/breaking_news.rss'},
-  {id:'heise',name:'Heise Online', lang:'DE', topic:'IT/Tech', url:'https://www.heise.de/rss/heise-atom.xml'},
+  {id:'hn',name:'Hacker News',note:'Tech community news & discussion',lang:'EN'},
+  {id:'techcrunch',name:'TechCrunch',note:'Startup & tech industry news',lang:'EN'},
+  {id:'nasa',name:'NASA News',note:'Space exploration & science',lang:'EN'},
+  {id:'heise',name:'Heise Online',note:'German tech news — great for B1+',lang:'DE'},
+  {id:'ct',name:'c\'t Magazin',note:'German IT magazine — ideal for B2+',lang:'DE'},
+];
+const EXAM_SRC = [
+  {id:'ai',icon:'🤖',name:'AI Generated',note:'Original Goethe-format questions by AI'},
+  {id:'goethe',icon:'🏛',name:'Goethe Official',note:'Use free Übungssets from goethe.de'},
+  {id:'telc',icon:'📋',name:'Telc Official',note:'Use free samples from telc.net'},
+  {id:'custom',icon:'📎',name:'Custom Text',note:'Paste your own text or article'},
 ];
 
-// ═══════════════════════════════════════════════ STATE
+// ══════════════════════════════════════════════════════════ STATE
 const S = {
-  lv:   ls('db_lv','A1'),
+  lv: ls('db_lv','A1'),
   mode: 'free',
-  sub:  null,
-  key:  ls('db_key',''),
+  sub: null,
+  key: ls('db_key',''),
   hist: [],
   msgs: +ls('db_msgs','0'),
   streak: +ls('db_streak','0'),
   newsSrc: JSON.parse(ls('db_nSrc','["dw_en","bbc"]')),
   techSrc: JSON.parse(ls('db_tSrc','["hn","nasa"]')),
+  examSrc: ls('db_eSrc','ai'),
   lines: +ls('db_lines','3'),
+  customTxt: ls('db_cTxt',''),
+  autoTr: ls('db_autoTr','true')==='true',
   busy: false,
-  // News slider state
-  newsItems: [],
-  newsIdx: 0,
-  newsChats: {}, // per-card chat history
 };
 
 function ls(k,def){return localStorage.getItem(k)??def}
 function lsSet(k,v){localStorage.setItem(k,String(v))}
 
-// ═══════════════════════════════════════════════ SMART MODE DETECTION
-// Detects user intent from message text and switches mode automatically
-function detectMode(text){
-  const t = text.toLowerCase();
+// ══════════════════════════════════════════════════════════ MASTER PROMPT BUILDER
+function buildSystem(){
+  const l = S.lv, m = S.mode, sub = S.sub||'';
+  const ldata = LV[l];
 
-  // Correction triggers
-  if(/correct|fix|check|grammar|fehler|korrigier|verbessern|überprüf|mein text|my text|prüf/i.test(t)){
-    return 'correct';
-  }
-  // Exam triggers
-  if(/prüfung|exam|goethe|telc|zertifikat|mock test|übungstest/i.test(t)){
-    return 'exam';
-  }
-  // Vocab triggers
-  if(/vokabel|vocabulary|flashcard|karteikarte|wortschatz|word list/i.test(t)){
-    return 'vocab';
-  }
-  // Game triggers
-  if(/spiel|game|adventure|abenteuer|story|geschicht/i.test(t)){
-    return 'game';
-  }
-  // News triggers
-  if(/news|nachrichten|artikel|headline|schlagzeile/i.test(t)){
-    return 'news';
-  }
-  return null; // no change
+  // Source label
+  let srcList = 'none configured';
+  if(m==='news') srcList = NEWS_SRC.filter(s=>S.newsSrc.includes(s.id)).map(s=>s.name).join(', ')||'none selected';
+  if(m==='tech') srcList = TECH_SRC.filter(s=>S.techSrc.includes(s.id)).map(s=>s.name).join(', ')||'none selected';
+  if(m==='exam') srcList = EXAM_SRC.find(s=>s.id===S.examSrc)?.name||'AI Generated';
+
+  return `╔══════════════════════════════════════════════════════╗
+║              DEUTSCHBOT — MASTER SYSTEM PROMPT       ║
+╚══════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════
+ IDENTITY & MISSION
+═══════════════════════════════════════════════════════
+You are DeutschBot, a world-class AI German language tutor.
+Your mission: make learning German deeply engaging, pedagogically
+sound, and precisely calibrated to each student's exact level and
+chosen learning mode.
+
+═══════════════════════════════════════════════════════
+ CURRENT SESSION PARAMETERS
+═══════════════════════════════════════════════════════
+CEFR Level     : ${l} — ${ldata.name} / ${ldata.en}
+Learning Mode  : ${m} — ${MODES[m]?.title}
+Sub-mode       : ${sub||'default'}
+Active Sources : ${srcList}
+Lines/Article  : ${S.lines}
+Exam Source    : ${m==='exam'?srcList:'N/A'}
+Custom Text    : ${S.customTxt?'PROVIDED (see below)':'none'}
+Auto-translate : ${S.autoTr}
+
+${S.customTxt?`CUSTOM TEXT PROVIDED BY STUDENT:\n"""\n${S.customTxt}\n"""\nUse this text as the primary source material for this session.\n`:''}
+
+═══════════════════════════════════════════════════════
+ LANGUAGE POLICY BY LEVEL
+═══════════════════════════════════════════════════════
+A1 — ALWAYS write German first, then English in [brackets] same line.
+     Max 8 words per German sentence. Present tense only.
+     Use emoji freely 🌟 — it aids comprehension and motivation.
+
+A2 — Primarily German. English only for new words in [brackets].
+     Introduce Perfekt tense and modal verbs naturally in context.
+
+B1 — Entire session in German. English ONLY if student explicitly asks.
+     Use Konjunktiv II, passive voice, and subordinate clauses naturally.
+
+B2 — German only. Rich vocabulary, varied sentence structures.
+     Model formal vs informal register. No English under any circumstances.
+
+C1 — Elevated academic German exclusively. Konjunktiv I for reported speech.
+     Use: "Wenngleich", "Inwiefern", "Ungeachtet dessen", "Gleichwohl".
+     Feedback on style AND correctness — not just grammar.
+
+C2 — Native-level German. Zero concessions. Dialectal variation welcome.
+     Literary language, archaic forms when appropriate.
+     Treat student as a fellow educated speaker throughout.
+
+═══════════════════════════════════════════════════════
+ CORRECTION POLICY BY LEVEL
+═══════════════════════════════════════════════════════
+A1 — "Fast richtig! ✓ Man sagt: [correct form]"
+     Praise the attempt FIRST, always. Correct EVERY error gently.
+
+A2 — "Gut! Noch besser wäre: [corrected sentence] 👍"
+     Briefly explain WHY in simple German + [English translation].
+
+B1 — Model the correct form naturally in your own reply.
+     Only break for significant errors: "(Tipp: [correction])"
+
+B2 — Correct only significant errors elegantly:
+     "Präziser wäre hier: [correction]"
+
+C1 — Correct only stylistic and register issues:
+     "Treffender wäre: [alternative] — weil [brief reason]"
+
+C2 — Correct only the subtlest connotational nuances:
+     "Das Wort X ist hier etwas [flach/übertrieben]. [Alternative] passt besser."
+
+═══════════════════════════════════════════════════════
+ VOCABULARY TEACHING RULE — ALL LEVELS
+═══════════════════════════════════════════════════════
+When introducing any new word, ALWAYS show all four elements:
+  • Word with article: *der Bahnhof*
+  • Plural: (die Bahnhöfe)
+  • English: = the train station
+  • Example at student's level: "Der Bahnhof ist groß."
+
+A1/A2: Teach exactly ONE new word per reply. Mark with *asterisks*.
+B1+: Introduce vocabulary naturally in context. Asterisks for key terms only.
+
+═══════════════════════════════════════════════════════
+ MODE: FREE CHAT (active when mode = free)
+═══════════════════════════════════════════════════════
+Open conversation. You lead the session:
+  A1/A2: Simple questions about daily life. One topic per turn.
+          "Wie heißt du? [What is your name?]"
+  B1/B2: Discuss opinions, current events, German culture.
+          Push for full-sentence complex responses.
+  C1/C2: Intellectual topics — literature, philosophy, society.
+          Engage as an intellectual equal throughout.
+
+Always end every response with one question inviting more German from student.
+
+═══════════════════════════════════════════════════════
+ MODE: NEWS & TECH (active when mode = news or tech)
+═══════════════════════════════════════════════════════
+Sources configured: ${srcList}
+Topic focus: ${sub||'general'}
+Lines per article for practice: ${S.lines}
+
+SESSION STRUCTURE for each article:
+  STEP 1 — HEADLINE: Present in German adapted to ${l} complexity.
+  STEP 2 — VOCABULARY: Teach 3-5 key words using the 4-part format.
+  STEP 3 — CONTENT: Use exactly ${S.lines} sentence(s) from the article for practice.
+  STEP 4 — QUESTIONS: Ask 2 comprehension questions at ${l} difficulty.
+  STEP 5 — GRAMMAR: Identify 1 grammar point relevant to ${l}.
+  STEP 6 — DISCUSSION: Invite the student's opinion in German.
+
+Source language adaptation:
+  EN source + A1/A2 → Translate headline to simple German, teach German vocabulary.
+  DE source + A1/A2 → Simplify the German significantly before presenting.
+  DE source + B1+ → Use original German text directly without simplification.
+
+Since you cannot browse the internet, CREATE a realistic, plausible news
+scenario INSPIRED BY the type of source selected (${srcList}).
+Be specific with details so it feels like a real article. Never claim to
+reproduce a real article — frame as: "Ein typischer Artikel aus [source] könnte berichten:"
+
+═══════════════════════════════════════════════════════
+ MODE: EXAM PRACTICE (active when mode = exam)
+═══════════════════════════════════════════════════════
+Source: ${srcList}
+Section: ${sub||'select a section'}
+Custom text: ${S.customTxt?'provided above':'none'}
+
+⚠ CRITICAL LEGAL RULE: NEVER reproduce copyrighted Goethe or Telc exam papers.
+Create ORIGINAL questions following the official FORMAT only.
+If custom text is provided above, use that as the reading/listening source.
+
+FORMAT by sub-mode:
+
+LESEVERSTEHEN:
+  Announce: "Teil 1 — Leseverstehen"
+  Present original reading text appropriate for ${l}
+  Ask: 3 multiple-choice + 2 open questions
+  After student responds: give full correct answers with explanations
+
+HÖRVERSTEHEN:
+  Announce: "Teil 2 — Hörverstehen (Textsimulation)"
+  Describe a scenario as if it were audio: dialogue, announcement, or interview
+  Ask 4 comprehension questions
+  Correct with full explanations
+
+SCHREIBEN:
+  Announce: "Teil 3 — Schreiben"
+  Give writing prompt appropriate for ${l}:
+    A1/A2: short message or form filling
+    B1/B2: opinion text or formal email
+    C1/C2: essay or formal report
+  When student submits: grade on CONTENT (25%), STRUCTURE (25%),
+    VOCABULARY (25%), GRAMMAR (25%) — give score X/100 + detailed feedback
+
+SPRECHEN:
+  Announce: "Teil 4 — Sprechen"
+  Give a monologue topic + discussion scenario for ${l}
+  Student writes their spoken response
+  Grade on fluency, content, interaction appropriateness
+
+GRAMMATIK:
+  10 targeted exercises: gap-fill, word order, articles/cases, conjugation
+  Correct immediately with rule explanation after each answer
+
+FULL MOCK TEST:
+  Run ALL 5 sections in sequence
+  Announce timing: "Sie haben X Minuten für diesen Teil"
+  Give final score X/100 with section breakdown at the end
+
+═══════════════════════════════════════════════════════
+ MODE: STORY GAME (active when mode = game)
+═══════════════════════════════════════════════════════
+Environment selected: ${sub||'Wohnung (A1)'}
+
+You are narrator and game master of a German text adventure.
+
+ENVIRONMENT → VOCABULARY FOCUS:
+  Wohnung (A1)        → furniture, rooms, household, colours
+  Supermarkt (A2)     → food, money, quantities, shopping phrases
+  Bahnhof (B1)        → travel, directions, timetables, transport
+  Büro (B2)           → work, colleagues, formal language, meetings
+  Universität (C1)    → academic life, research, intellectual debate
+  Stadt bei Nacht (C2)→ literary, philosophical, cultural, atmospheric
+
+MANDATORY TURN STRUCTURE — every turn without exception:
+  1. Narrate what happens: 2-3 sentences in German (at ${l} complexity)
+  2. Teach 1 vocabulary item from the scene using 4-part format
+  3. Present EXACTLY 3 choices formatted as:
+     ➤ 1. [option in German]
+     ➤ 2. [option in German]
+     ➤ 3. [option in German]
+
+GAME CORRECTION: When student makes a language error, include:
+  "(Gut versucht! Man sagt: '[correction]')" — then continue the story.
+  Never interrupt the narrative flow with long corrections.
+
+ADVANCEMENT: Correct German = character moves forward.
+             Wrong answer = brief explanation, then continue anyway.
+
+═══════════════════════════════════════════════════════
+ MODE: VOCABULARY (active when mode = vocab)
+═══════════════════════════════════════════════════════
+Sub-mode: ${sub||'Flashcard Drill'}
+
+FLASHCARD DRILL:
+  Show one word → student responds → mark ✓ or ✗
+  Track and display running score: "Score: X/Y"
+  After 10 cards: show summary + offer to redo incorrect ones
+
+THEMED LISTS:
+  Present 10 words on chosen topic
+  Each: article + plural + English + example sentence at ${l}
+  Then drill randomly
+
+FILL-IN-THE-BLANK:
+  Sentences at ${l} complexity with ___ gaps
+  Correct immediately with full grammar rule explanation
+
+WORD FAMILIES:
+  Start from a root verb or noun
+  Build complete family: derivatives, compounds, collocations
+  Show how German word-building logic works systematically
+
+═══════════════════════════════════════════════════════
+ FORMATTING RULES — ALL MODES, ALL LEVELS
+═══════════════════════════════════════════════════════
+*word*           → vocabulary highlight
+**text**         → important grammar rule or key phrase
+[English]        → translation in square brackets (A1/A2)
+(Tipp: ...)      → grammar tip inline
+📌 Pattern:     → grammar pattern box
+✓ / ✗           → correct / incorrect in drills
+➤ 1. 2. 3.     → game choices (game mode only, mandatory)
+
+═══════════════════════════════════════════════════════
+ EXAM ALIGNMENT BY LEVEL
+═══════════════════════════════════════════════════════
+A1 → Goethe Start Deutsch 1 / Telc Deutsch A1
+A2 → Goethe Start Deutsch 2 / Telc Deutsch A2
+B1 → Goethe Zertifikat Deutsch / Telc Deutsch B1
+B2 → Goethe B2 / Telc Deutsch B2
+C1 → Goethe C1 Großes Deutsches Sprachdiplom
+C2 → Goethe C2 / Kleines Deutsches Sprachdiplom / GDS
+
+═══════════════════════════════════════════════════════
+ ENCOURAGEMENT BY LEVEL
+═══════════════════════════════════════════════════════
+A1/A2 → Use emoji freely. Celebrate every attempt warmly.
+        "Sehr gut! 🎉" "Wunderbar! ⭐" "Prima! 👏" "Super! 🌟"
+        Never let any frustration go unaddressed.
+
+B1/B2 → Moderate encouragement. Focus on measurable progress.
+        "Das war sehr gut ausgedrückt."
+        "Dein Wortschatz wird immer reicher!"
+
+C1/C2 → Intellectual peer respect. No patronising praise.
+        "Das ist ein interessanter Standpunkt."
+        "Ihre Formulierung hier ist besonders treffend."
+
+═══════════════════════════════════════════════════════
+ SESSION OPENING RULE
+═══════════════════════════════════════════════════════
+On the FIRST message of every session:
+  1. Greet warmly in German (+ English for A1/A2)
+  2. Confirm mode + level in ONE sentence maximum
+  3. Begin the session immediately — no long preamble
+  4. Game mode: start narrating the scene at once
+  5. Exam mode: announce first section and begin immediately
+
+╔══════════════════════════════════════════════════════╗
+║         END OF DEUTSCHBOT MASTER SYSTEM PROMPT       ║
+╚══════════════════════════════════════════════════════╝`;
 }
 
-// ═══════════════════════════════════════════════ RSS FETCHER
-const CORS_PROXY = 'https://api.allorigins.win/get?url=';
+// ══════════════════════════════════════════════════════════ GEMINI API CALL
+// Token-efficient strategy for free tier (avoids 429):
+//  - System context embedded as first history turn (paid once, not per request)
+//  - Follow-up calls send only last 6 turns = ~200-400 tokens each
+//  - Auto-retry on 429 with countdown timer (up to 2 retries)
 
-async function fetchFeed(feed){
-  const url = CORS_PROXY + encodeURIComponent(feed.url);
-  const res = await fetch(url, {signal: AbortSignal.timeout(8000)});
-  const json = await res.json();
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(json.contents, 'application/xml');
-
-  const items = [];
-  const nodes = doc.querySelectorAll('item, entry');
-
-  nodes.forEach((node, i) => {
-    if(i >= 8) return; // max 8 per feed
-    const title = node.querySelector('title')?.textContent?.trim() || '';
-    const desc = node.querySelector('description,summary,content')?.textContent?.trim() || '';
-    const link = node.querySelector('link')?.textContent?.trim()
-               || node.querySelector('link')?.getAttribute('href') || '#';
-    const pubDate = node.querySelector('pubDate,published,updated')?.textContent?.trim() || '';
-
-    // Clean HTML from description
-    const cleanDesc = desc.replace(/<[^>]*>/g,'').replace(/&[a-z]+;/g,' ').substring(0,400);
-
-    if(title && title.length > 10){
-      items.push({
-        title: title.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"'),
-        desc: cleanDesc,
-        link,
-        pubDate,
-        source: feed.name,
-        lang: feed.lang,
-        topic: feed.topic,
-        feedId: feed.id,
-      });
-    }
-  });
-  return items;
-}
-
-async function loadNewsFeeds(mode){
-  const feeds = mode === 'tech'
-    ? TECH_SRC.filter(f => S.techSrc.includes(f.id))
-    : RSS_FEEDS.filter(f => S.newsSrc.includes(f.id));
-
-  if(!feeds.length) return [];
-
-  // Fetch all in parallel, tolerate individual failures
-  const results = await Promise.allSettled(feeds.map(f => fetchFeed(f)));
-  const all = [];
-  results.forEach(r => {
-    if(r.status === 'fulfilled') all.push(...r.value);
-  });
-
-  // Shuffle so feeds interleave
-  for(let i = all.length-1; i > 0; i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [all[i],all[j]] = [all[j],all[i]];
-  }
-
-  return all.slice(0, 20); // max 20 cards
-}
-
-// ═══════════════════════════════════════════════ NEWS UI
-function renderNewsPanel(mode){
-  const col = document.getElementById('mainCol');
-
-  col.innerHTML = `
-    <div class="news-panel" id="newsPanel">
-      <div class="news-topbar">
-        <span style="font-size:20px">${mode==='tech'?'💻':'📰'}</span>
-        <div>
-          <span class="news-topbar-title">${mode==='tech'?'Tech & Science':'News & Articles'}</span>
-          <span class="news-topbar-sub">Real headlines · German lessons built in</span>
-        </div>
-        <button class="news-refresh-btn" id="refreshBtn" onclick="refreshNews()">
-          <svg id="refreshIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          Refresh
-        </button>
-      </div>
-
-      <div class="feed-pills" id="feedPills"></div>
-
-      <div class="slider-track" id="sliderTrack">
-        <div class="news-loading" id="newsLoading">
-          <div class="news-loading-spinner"></div>
-          <div>Fetching real headlines…</div>
-        </div>
-        <div class="slider-inner" id="sliderInner" style="display:none"></div>
-      </div>
-
-      <div class="slider-nav" id="sliderNav" style="display:none">
-        <div class="slider-nav-inner">
-          <button class="nav-btn" id="navPrev" onclick="newsNav(-1)" disabled>◀</button>
-          <div class="nav-dots" id="navDots"></div>
-          <span class="nav-counter" id="navCounter">1 / 1</span>
-          <button class="nav-btn" id="navNext" onclick="newsNav(1)">▶</button>
-        </div>
-      </div>
-    </div>`;
-
-  renderFeedPills(mode);
-  fetchAndRenderNews(mode);
-}
-
-function renderFeedPills(mode){
-  const feeds = mode==='tech' ? TECH_SRC : RSS_FEEDS;
-  const active = mode==='tech' ? S.techSrc : S.newsSrc;
-  const pills = document.getElementById('feedPills');
-  if(!pills) return;
-  pills.innerHTML = feeds.map(f => `
-    <div class="feed-pill ${active.includes(f.id)?'on':''}" onclick="toggleFeedPill('${f.id}','${mode}',this)">
-      ${f.name} <span class="feed-pill-lang">${f.lang}</span>
-    </div>`).join('');
-}
-
-function toggleFeedPill(id, mode, el){
-  const arr = mode==='tech' ? S.techSrc : S.newsSrc;
-  const key = mode==='tech' ? 'db_tSrc' : 'db_nSrc';
-  const i = arr.indexOf(id);
-  if(i >= 0) arr.splice(i,1); else arr.push(id);
-  lsSet(key, JSON.stringify(arr));
-  el.classList.toggle('on', arr.includes(id));
-  // Reload with new selection after short delay
-  clearTimeout(el._t);
-  el._t = setTimeout(() => fetchAndRenderNews(mode), 600);
-}
-
-async function fetchAndRenderNews(mode){
-  const loading = document.getElementById('newsLoading');
-  const inner = document.getElementById('sliderInner');
-  const nav = document.getElementById('sliderNav');
-  const refreshBtn = document.getElementById('refreshBtn');
-
-  if(loading) loading.style.display = 'flex';
-  if(inner) inner.style.display = 'none';
-  if(nav) nav.style.display = 'none';
-  if(refreshBtn) refreshBtn.classList.add('spinning');
-
-  try {
-    const items = await loadNewsFeeds(mode);
-    S.newsItems = items;
-    S.newsIdx = 0;
-    S.newsChats = {};
-
-    if(loading) loading.style.display = 'none';
-    if(refreshBtn) refreshBtn.classList.remove('spinning');
-
-    if(!items.length){
-      if(inner) inner.style.display = 'none';
-      const track = document.getElementById('sliderTrack');
-      if(track) track.innerHTML = `
-        <div class="news-empty">
-          <div class="news-empty-icon">📡</div>
-          <p>Could not load headlines. Check your internet connection or select different sources.</p>
-          <button class="btn-save" style="margin-top:12px" onclick="fetchAndRenderNews('${mode}')">Try Again</button>
-        </div>`;
-      return;
-    }
-
-    if(inner) inner.style.display = 'flex';
-    if(nav) nav.style.display = 'flex';
-
-    // Build all cards
-    inner.innerHTML = items.map((item,i) => buildNewsCard(item,i)).join('');
-
-    updateSlider();
-    buildNavDots(items.length);
-
-    // Generate lesson for first card
-    generateLesson(0, mode);
-
-  } catch(e){
-    if(loading) loading.style.display = 'none';
-    if(refreshBtn) refreshBtn.classList.remove('spinning');
-    const track = document.getElementById('sliderTrack');
-    if(track) track.innerHTML = `
-      <div class="news-empty">
-        <div class="news-empty-icon">⚠️</div>
-        <p>Error loading feeds: ${e.message}</p>
-        <button class="btn-save" style="margin-top:12px" onclick="fetchAndRenderNews('${mode}')">Retry</button>
-      </div>`;
-  }
-}
-
-function buildNewsCard(item, idx){
-  const timeAgo = item.pubDate ? formatTime(item.pubDate) : '';
-  return `
-    <div class="news-card" id="card-${idx}">
-      <div class="nc-meta">
-        <span class="nc-source">${item.source}</span>
-        <span class="nc-topic">${item.topic}</span>
-        <span class="nc-lang-badge" style="font-size:9px;padding:2px 8px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--text3);font-family:var(--ff-mono)">${item.lang}</span>
-        ${timeAgo?`<span class="nc-time">${timeAgo}</span>`:''}
-      </div>
-
-      <h2 class="nc-headline">${item.title}</h2>
-      <div class="nc-headline-de" id="headline-de-${idx}">
-        <span style="color:var(--text3);font-size:12px">⏳ Generating German translation…</span>
-      </div>
-
-      ${item.desc ? `<p class="nc-summary">${item.desc.substring(0,300)}${item.desc.length>300?'…':''}</p>` : ''}
-      ${item.link && item.link!=='#' ? `<a class="nc-link" href="${item.link}" target="_blank" rel="noopener">🔗 Read full article ↗</a>` : ''}
-
-      <div class="nc-lesson" id="lesson-${idx}">
-        <div class="nc-lesson-title">📖 German Lesson for this Article</div>
-        <div style="color:var(--text3);font-size:13px;text-align:center;padding:20px">
-          <div class="news-loading-spinner" style="margin:0 auto 10px"></div>
-          Generating lesson at ${S.lv} level…
-        </div>
-      </div>
-
-      <div class="nc-chat" id="ncchat-${idx}">
-        <div class="nc-chat-title">💬 Discuss this article in German</div>
-        <div class="nc-chat-msgs" id="ncchat-msgs-${idx}"></div>
-        <div class="nc-input-row">
-          <input class="nc-input" id="ncinput-${idx}" type="text"
-            placeholder="Ask about this article in German or English…"
-            onkeydown="if(event.key==='Enter')ncSend(${idx})">
-          <button class="nc-send" onclick="ncSend(${idx})">Send →</button>
-        </div>
-      </div>
-    </div>`;
-}
-
-function formatTime(str){
-  try{
-    const d = new Date(str);
-    const diff = Date.now() - d.getTime();
-    const h = Math.floor(diff/3600000);
-    if(h < 1) return 'Just now';
-    if(h < 24) return `${h}h ago`;
-    return `${Math.floor(h/24)}d ago`;
-  } catch(_){ return '' }
-}
-
-// Generate AI lesson for a card
-async function generateLesson(idx, mode){
-  if(!S.key) return;
-  const item = S.newsItems[idx];
-  if(!item) return;
-  if(item._lessonDone) return; // already generated
-
-  const lv = S.lv;
-  const prompt = `You are DeutschBot, an AI German tutor at ${lv} level (${LV[lv].name}/${LV[lv].en}).
-
-A student is reading this real news headline and summary:
-HEADLINE: "${item.title}"
-SUMMARY: "${item.desc || 'No summary available.'}"
-SOURCE: ${item.source} (${item.lang})
-
-Please provide:
-
-1. GERMAN TRANSLATION of the headline, adapted to ${lv} level complexity (simpler for A1/A2, keep full complexity for B2+)
-
-2. VOCABULARY: Pick exactly 3 key words from the headline/summary that are useful for ${lv}. For each word show:
-   *die/der/das Word* (plural) = English meaning. Example sentence at ${lv} level.
-
-3. PRACTICE SENTENCES: Write exactly ${S.lines} sentence(s) in German about the topic of this article, at ${lv} difficulty. Number them.
-
-4. COMPREHENSION QUESTIONS: Write exactly 2 questions in German about this article, appropriate for ${lv}. Number them with Q1: and Q2:
-
-Format your response with these exact section headers:
-[TRANSLATION]
-[VOCABULARY]
-[SENTENCES]
-[QUESTIONS]
-
-Keep everything strictly at ${lv} level. ${lv==='A1'||lv==='A2'?'Add [English] translations in square brackets for difficult words.':''}`;
-
-  try{
-    const body = {
-      contents:[{role:'user', parts:[{text:prompt}]}],
-      generationConfig:{temperature:0.7, maxOutputTokens:600, topP:0.9},
-    };
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite-preview:generateContent?key=${S.key}`;
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const data = await res.json();
-
-    if(data.error || !data.candidates?.[0]) return;
-    const text = data.candidates[0].content.parts[0].text;
-
-    item._lessonDone = true;
-    renderLesson(idx, text);
-  } catch(e){
-    console.warn('Lesson generation failed:', e);
-  }
-}
-
-function renderLesson(idx, text){
-  // Parse sections
-  const get = (tag) => {
-    const m = text.match(new RegExp(`\\[${tag}\\]([\\s\\S]*?)(?=\\[|$)`));
-    return m ? m[1].trim() : '';
-  };
-
-  const translation = get('TRANSLATION');
-  const vocab = get('VOCABULARY');
-  const sentences = get('SENTENCES');
-  const questions = get('QUESTIONS');
-
-  // Update translation
-  const transEl = document.getElementById(`headline-de-${idx}`);
-  if(transEl && translation){
-    transEl.textContent = translation;
-  }
-
-  // Build lesson HTML
-  const lessonEl = document.getElementById(`lesson-${idx}`);
-  if(!lessonEl) return;
-
-  let html = '<div class="nc-lesson-title">📖 German Lesson</div>';
-
-  if(vocab){
-    html += '<div style="font-size:10px;color:var(--text3);margin-bottom:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Key Vocabulary</div>';
-    html += '<div class="vocab-row">';
-    // Parse vocab lines
-    const lines = vocab.split('\n').filter(l=>l.trim());
-    lines.forEach(line => {
-      const clean = line.replace(/^\d+\.\s*/,'').trim();
-      if(clean){
-        html += `<div class="vocab-tag"><strong>${clean.split('=')[0]?.trim()||clean}</strong>${clean.includes('=')?'<span> = '+clean.split('=').slice(1).join('=').trim()+'</span>':''}</div>`;
-      }
-    });
-    html += '</div>';
-  }
-
-  if(sentences){
-    html += '<div style="font-size:10px;color:var(--text3);margin:12px 0 8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Practice Sentences</div>';
-    html += '<div class="nc-sentences">';
-    sentences.split('\n').filter(l=>l.trim()).forEach((line,i) => {
-      const clean = line.replace(/^\d+\.\s*/,'').trim();
-      if(clean) html += `<div class="nc-sent"><span class="nc-sent-num">${i+1}</span><span class="nc-sent-text">${clean}</span></div>`;
-    });
-    html += '</div>';
-  }
-
-  if(questions){
-    html += '<div style="font-size:10px;color:var(--text3);margin:12px 0 8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Comprehension Questions</div>';
-    html += '<div class="nc-question-list">';
-    questions.split('\n').filter(l=>l.trim()).forEach(line => {
-      const clean = line.replace(/^Q?\d+[:.]?\s*/i,'').trim();
-      if(clean) html += `<div class="nc-q">❓ ${clean}</div>`;
-    });
-    html += '</div>';
-  }
-
-  lessonEl.innerHTML = html;
-}
-
-// Per-card chat
-async function ncSend(idx){
-  if(!S.key) return;
-  const input = document.getElementById(`ncinput-${idx}`);
-  const msgs = document.getElementById(`ncchat-msgs-${idx}`);
-  if(!input || !msgs) return;
-  const text = input.value.trim();
-  if(!text) return;
-  input.value = '';
-
-  // Add user message
-  const userDiv = document.createElement('div');
-  userDiv.className = 'nc-msg user';
-  userDiv.textContent = text;
-  msgs.appendChild(userDiv);
-  msgs.scrollTop = msgs.scrollHeight;
-
-  // Init card history
-  if(!S.newsChats[idx]) S.newsChats[idx] = [];
-  S.newsChats[idx].push({role:'user', parts:[{text}]});
-
-  // Build context
-  const item = S.newsItems[idx];
-  const sysMsg = {role:'user', parts:[{text:
-    `You are DeutschBot, AI German tutor at ${S.lv} level. The student is reading a news article:\n` +
-    `Headline: "${item.title}"\nSummary: "${item.desc||''}"\nSource: ${item.source}\n` +
-    `Help them understand and discuss this article in German at ${S.lv} level. ` +
-    `Language policy: ${getLangPolicy()}. Correction style: ${getCorrectionStyle()}. Keep replies concise.`
-  }]};
-  const sysAck = {role:'model', parts:[{text:'Verstanden.'}]};
-  const contents = [sysMsg, sysAck, ...S.newsChats[idx].slice(-6)];
-
-  // Typing indicator
-  const typDiv = document.createElement('div');
-  typDiv.className = 'nc-msg bot';
-  typDiv.innerHTML = '<span style="opacity:.5">…</span>';
-  msgs.appendChild(typDiv);
-  msgs.scrollTop = msgs.scrollHeight;
-
-  try{
-    const body = {contents, generationConfig:{temperature:0.8,maxOutputTokens:400}};
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite-preview:generateContent?key=${S.key}`;
-    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const data = await res.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || '(no response)';
-    typDiv.textContent = reply;
-    S.newsChats[idx].push({role:'model', parts:[{text:reply}]});
-    msgs.scrollTop = msgs.scrollHeight;
-    S.msgs++; lsSet('db_msgs',S.msgs); updateStats();
-  } catch(e){
-    typDiv.textContent = '⚠️ Error: ' + e.message;
-  }
-}
-
-// Slider navigation
-function newsNav(dir){
-  const newIdx = S.newsIdx + dir;
-  if(newIdx < 0 || newIdx >= S.newsItems.length) return;
-  S.newsIdx = newIdx;
-  updateSlider();
-  // Lazy-generate lesson for this card
-  generateLesson(newIdx, S.mode);
-}
-
-function updateSlider(){
-  const inner = document.getElementById('sliderInner');
-  const prev = document.getElementById('navPrev');
-  const next = document.getElementById('navNext');
-  const counter = document.getElementById('navCounter');
-  if(!inner) return;
-
-  inner.style.transform = `translateX(-${S.newsIdx * 100}%)`;
-  if(prev) prev.disabled = S.newsIdx === 0;
-  if(next) next.disabled = S.newsIdx >= S.newsItems.length - 1;
-  if(counter) counter.textContent = `${S.newsIdx+1} / ${S.newsItems.length}`;
-
-  document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('on', i===S.newsIdx));
-}
-
-function buildNavDots(count){
-  const dots = document.getElementById('navDots');
-  if(!dots) return;
-  dots.innerHTML = Array.from({length:Math.min(count,10)},(_,i)=>
-    `<div class="nav-dot${i===0?' on':''}" onclick="goToCard(${i})"></div>`).join('');
-}
-
-function goToCard(idx){
-  S.newsIdx = idx;
-  updateSlider();
-  generateLesson(idx, S.mode);
-}
-
-function refreshNews(){
-  fetchAndRenderNews(S.mode);
-}
-
-// ═══════════════════════════════════════════════ MAIN CHAT
-function restoreChatUI(){
-  const col = document.getElementById('mainCol');
-  col.innerHTML = `
-    <div class="mode-bar" id="modeBar">
-      <span class="mode-icon-lg" id="mIcon">💬</span>
-      <div>
-        <span class="mode-title" id="mTitle">Free Conversation</span>
-        <span class="mode-subtitle" id="mSub">Chat freely — your AI tutor adapts to your level</span>
-      </div>
-      <div class="mode-bar-right">
-        <div class="src-pill" id="srcPill" onclick="openDrawer()" style="display:none">
-          <div class="src-pill-dot"></div>
-          <span id="srcLabel">Sources active</span>
-          <span style="color:var(--text3);font-size:12px">⚙</span>
-        </div>
-      </div>
-    </div>
-    <div class="subbar" id="subBar" style="display:none"></div>
-    <div class="chat-win" id="chatWin"></div>
-    <div class="chips-row" id="chipsRow"></div>
-    <div class="input-zone" id="inputZone">
-      <div class="input-row">
-        <div class="input-shell">
-          <textarea id="msgInput" rows="1" placeholder="${LV[S.lv].ph}"
-            onkeydown="onKey(event)" oninput="grow(this)"></textarea>
-        </div>
-        <button class="send" id="sendBtn" onclick="sendMsg()">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-    </div>`;
-}
-
-// ═══════════════════════════════════════════════ GEMINI CALL
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function getLangPolicy(){
@@ -1037,82 +1213,98 @@ function getLangPolicy(){
     A1:'German + [English] on every line, max 8 words per sentence, use emoji freely',
     A2:'Mostly German, [English] only for new or difficult words',
     B1:'German only — English only if student explicitly requests it',
-    B2:'German only, rich vocabulary, no English',
+    B2:'German only, rich vocabulary, absolutely no English',
     C1:'Elevated academic German only, Konjunktiv I for reported speech',
-    C2:'Native-level German, zero concessions, literary register'
+    C2:'Native-level German, zero concessions, literary register welcome'
   };
   return p[S.lv]||p.B1;
 }
 function getCorrectionStyle(){
   const c={
-    A1:'"Fast richtig! ✓ Man sagt: [correct form]" — praise first always',
-    A2:'"Gut! Noch besser wäre: [corrected sentence]"',
-    B1:'Model correct form in your reply; (Tipp: ...) only for major errors',
-    B2:'"Präziser wäre hier: [correction]"',
-    C1:'"Treffender wäre: [alternative] — weil [reason]"',
-    C2:'Correct only subtle connotational nuances'
+    A1:'"Fast richtig! ✓ Man sagt: [correct form]" — always praise the attempt first',
+    A2:'"Gut! Noch besser wäre: [corrected sentence]" — briefly explain why',
+    B1:'Model correct form naturally in your reply. Use (Tipp: ...) only for significant errors',
+    B2:'"Präziser wäre hier: [correction]" — comment on word choice and register',
+    C1:'"Treffender wäre: [alternative] — weil [brief reason]"',
+    C2:'Correct only the subtlest connotational or stylistic nuances'
   };
   return c[S.lv]||c.B1;
+}
+function getSources(){
+  if(S.mode==='news') return NEWS_SRC.filter(s=>S.newsSrc.includes(s.id)).map(s=>s.name).join(', ')||'any news source';
+  if(S.mode==='tech') return TECH_SRC.filter(s=>S.techSrc.includes(s.id)).map(s=>s.name).join(', ')||'any tech source';
+  if(S.mode==='exam') return EXAM_SRC.find(s=>s.id===S.examSrc)?.name||'AI Generated';
+  return 'N/A';
 }
 function getModeRules(){
   const sub = S.sub||'';
   const rules={
-    free:`Open conversation. Lead with a question every turn. A1/A2: daily life. B1+: opinions and events. C1/C2: intellectual debate.`,
-    exam:`Section: ${sub}. Create ORIGINAL Goethe/Telc FORMAT questions. LESEVERSTEHEN: text+5 questions. SCHREIBEN: writing prompt graded Content/Structure/Vocabulary/Grammar 25% each. GRAMMATIK: 10 exercises. FULL MOCK: all sections in sequence.`,
-    game:`Narrator of German text adventure. Environment: ${sub||'Wohnung (A1)'}. Every turn: 2-3 German sentences, teach 1 vocab item, then exactly: ➤ 1. ➤ 2. ➤ 3.`,
-    vocab:`Sub-mode: ${sub}. FLASHCARD: show word → student responds → ✓/✗ → Score X/Y. THEMED LISTS: 10 words with article+plural+English+example. FILL-BLANK: gaps with immediate correction. WORD FAMILIES: full derivative tree.`,
-    correct:`You are a German writing tutor. When the student pastes text, you must:
-1. Show the CORRECTED version with all errors fixed
-2. List each ERROR with: original → corrected, and explain the grammar rule in simple terms
-3. Give the student ONE practice exercise based on their most common mistake
-4. End with an encouraging summary of what they did well
-Language policy: ${getLangPolicy()}`,
-    tech:`Tech/science topic discussion. Sub-mode: ${sub}. Create realistic plausible tech news scenarios since you cannot browse internet.`,
+    free:`Open conversation tutor. Lead with a question every turn. A1/A2: simple daily life topics. B1/B2: opinions and current events. C1/C2: intellectual debate as equals.`,
+    news:`Teach using a news article. Since you cannot browse the internet, CREATE a realistic plausible scenario from ${getSources()}. Structure: 1) Present headline in German at ${S.lv} level. 2) Teach 3 key vocab words (article+plural+English+example). 3) Use ${S.lines} sentence(s) for practice. 4) Ask 2 comprehension questions. 5) Note 1 grammar point. 6) Invite student opinion.`,
+    tech:`Same structure as news but focus on: ${sub||'technology and science'}. Source style: ${getSources()}.`,
+    exam:`Exam section: ${sub||'select a section'}. Create ORIGINAL questions in Goethe/Telc FORMAT — never reproduce copyrighted material. LESEVERSTEHEN: reading text + 5 questions. SCHREIBEN: prompt graded Content/Structure/Vocabulary/Grammar 25% each with score X/100. GRAMMATIK: 10 exercises with immediate correction. FULL MOCK: all sections in sequence with timing.`,
+    game:`You are narrator of a German text adventure. Environment: ${sub||'Wohnung (A1)'}. EVERY turn without exception: narrate 2-3 sentences in German at ${S.lv} level, teach 1 vocab item (article+plural+English+example), then present EXACTLY 3 choices formatted as: ➤ 1. [option] ➤ 2. [option] ➤ 3. [option]`,
+    vocab:`Sub-mode: ${sub||'Flashcard Drill'}. FLASHCARD: show word → student responds → mark ✓/✗ → show running Score: X/Y. THEMED LISTS: 10 words with full 4-part format. FILL-IN-BLANK: sentences with ___ gaps, correct immediately with rule explanation. WORD FAMILIES: build complete derivative tree from a root word.`
   };
   return rules[S.mode]||rules.free;
 }
 
 function buildSystemTurn(){
-  return `[SYSTEM - DeutschBot AI German Tutor]
+  return `[SYSTEM INSTRUCTIONS — DeutschBot AI German Tutor]
+Identity: You are DeutschBot, a world-class AI German language tutor.
 Level: ${S.lv} — ${LV[S.lv].name} / ${LV[S.lv].en}
 Mode: ${S.mode} — ${MODES[S.mode]?.title}
 Sub-mode: ${S.sub||'default'}
 Language policy: ${getLangPolicy()}
 Correction style: ${getCorrectionStyle()}
-Vocab rule: For every new word show *article Word* (plural) = English + example sentence.
-Mode rules: ${getModeRules()}
-Always end each reply with one question inviting the student to produce more German.
-[END SYSTEM]`;
+Vocabulary rule: For every new word show — *der/die/das Word* (plural) = English meaning. Example: "Der Hund ist groß."
+Mode behaviour: ${getModeRules()}
+Sources configured: ${getSources()}
+Lines per article: ${S.lines}
+${S.customTxt?'Custom text: """'+S.customTxt.slice(0,200)+'"""':''}
+Encouragement: A1/A2 use emoji freely and celebrate every attempt. B1/B2 give measured praise. C1/C2 give intellectual peer acknowledgment only.
+End EVERY reply with one question that invites the student to produce more German.
+[END SYSTEM INSTRUCTIONS]`;
 }
 
 async function callGemini(userText, isOpener, retryCount=0){
   if(!S.key){
-    addMsg('bot',`🔑 <strong>API key needed!</strong><br><br>Paste your <strong>free Gemini API key</strong> in the top bar → Save Key.<br><br>Get it free at: <strong style="color:var(--gold)">aistudio.google.com</strong>`);
+    addMsg('bot',`🔑 <strong>API key needed!</strong><br><br>
+Paste your <strong>free Google Gemini API key</strong> in the top bar and click <strong>Save Key</strong>.<br><br>
+Get it free (no card needed) at:<br>
+<strong style="color:var(--gold)">aistudio.google.com</strong> → Sign in → Get API Key`);
     return;
   }
 
-  S.busy=true;
-  const sendBtn = document.getElementById('sendBtn');
-  if(sendBtn) sendBtn.disabled=true;
+  S.busy = true;
+  document.getElementById('sendBtn').disabled = true;
 
   let contents;
-  if(isOpener || S.hist.length===0){
-    const sysTurn  = {role:'user',  parts:[{text:buildSystemTurn()}]};
-    const sysAck   = {role:'model', parts:[{text:'Verstanden. Ich starte die Stunde.'}]};
-    const userTurn = {role:'user',  parts:[{text:userText}]};
+
+  if(isOpener || S.hist.length === 0){
+    // ── SESSION START: embed system instructions as first user turn (one-time cost)
+    const sysTurn  = {role:'user',  parts:[{text: buildSystemTurn()}]};
+    const sysAck   = {role:'model', parts:[{text: 'Verstanden. Ich starte die Stunde jetzt.'}]};
+    const userTurn = {role:'user',  parts:[{text: userText}]};
     S.hist = [sysTurn, sysAck, userTurn];
     contents = S.hist;
+
   } else {
-    if(retryCount===0) S.hist.push({role:'user', parts:[{text:userText}]});
-    const ctx    = S.hist.slice(0,2);
+    // ── FOLLOW-UP: just append the new message, send minimal history
+    if(retryCount === 0){
+      S.hist.push({role:'user', parts:[{text: userText}]});
+    }
+    // Always keep: turns 0-1 (system context) + last 6 turns (3 exchanges)
+    const ctx    = S.hist.slice(0, 2);
     const recent = S.hist.slice(-6);
     contents = [...ctx, ...recent];
   }
 
-  const typing = retryCount===0 ? showTyping() : document.querySelector('.typing');
+  const typing = retryCount === 0 ? showTyping() : document.querySelector('.typing');
+
   const body = {
     contents,
-    generationConfig:{temperature:0.82, maxOutputTokens:800, topP:0.95},
+    generationConfig:{ temperature:0.82, maxOutputTokens:800, topP:0.95 },
     safetySettings:[
       {category:'HARM_CATEGORY_HARASSMENT',       threshold:'BLOCK_NONE'},
       {category:'HARM_CATEGORY_HATE_SPEECH',       threshold:'BLOCK_NONE'},
@@ -1120,23 +1312,35 @@ async function callGemini(userText, isOpener, retryCount=0){
       {category:'HARM_CATEGORY_DANGEROUS_CONTENT', threshold:'BLOCK_NONE'},
     ]
   };
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite-preview:generateContent?key=${S.key}`;
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${S.key}`;
 
   try{
     const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 
-    if(res.status===429){
-      let wait=15;
-      try{ const ed=await res.json(); const m=(ed?.error?.message||'').match(/(\d+\.?\d*)s/); if(m) wait=Math.ceil(parseFloat(m[1]))+3; } catch(_){}
-      wait=Math.min(wait,40);
-      if(retryCount<2){
-        for(let i=wait;i>0;i--){ toast(`⏳ Rate limit — retrying in ${i}s…`,1100); await sleep(1000); }
-        return callGemini(userText,isOpener,retryCount+1);
+    if(res.status === 429){
+      let waitSec = 15;
+      try{
+        const ed = await res.json();
+        const m = (ed?.error?.message||'').match(/(\d+\.?\d*)s/);
+        if(m) waitSec = Math.ceil(parseFloat(m[1])) + 3;
+      } catch(_){}
+      waitSec = Math.min(waitSec, 40);
+
+      if(retryCount < 2){
+        for(let i=waitSec; i>0; i--){
+          toast(`⏳ Rate limit — retrying in ${i}s…`, 1100);
+          await sleep(1000);
+        }
+        return callGemini(userText, isOpener, retryCount+1);
       } else {
         typing?.remove();
-        addMsg('bot','⏱️ <strong>Rate limit.</strong> Wait 60 seconds then try again.');
+        addMsg('bot',`⏱️ <strong>Rate limit reached.</strong><br><br>
+The free Gemini tier allows 15 requests/minute and 1,500/day.<br>
+Wait 60 seconds then try again. If it keeps happening, start a fresh session by clicking the mode card.`);
         if(!isOpener && retryCount===0) S.hist.pop();
-        S.busy=false; if(sendBtn) sendBtn.disabled=false; return;
+        S.busy=false; document.getElementById('sendBtn').disabled=false;
+        return;
       }
     }
 
@@ -1144,165 +1348,97 @@ async function callGemini(userText, isOpener, retryCount=0){
     typing?.remove();
 
     if(data.error){
-      const code=data.error.code||0;
-      const msg=code===401||code===403?'API key invalid — get a new one at <strong>aistudio.google.com</strong>.':
-                code===400?'Bad request — click the mode card to start a fresh session.':
-                code===429?'Rate limit — wait 60 seconds.':data.error.message;
+      const code = data.error.code||0;
+      const msg = code===401||code===403 ? 'API key invalid — get a new one at <strong>aistudio.google.com</strong>.'
+                : code===400 ? 'Bad request — click the mode card to start a fresh session.'
+                : code===429 ? 'Rate limit — wait 60 seconds and try again.'
+                : data.error.message;
       addMsg('bot',`⚠️ <strong>Error ${code}:</strong> ${msg}`);
       if(!isOpener && retryCount===0) S.hist.pop();
     } else {
-      const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'(empty — try again)';
-      S.hist.push({role:'model',parts:[{text:reply}]});
-      addMsg('bot',reply);
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || '(empty — please try again)';
+      S.hist.push({role:'model', parts:[{text:reply}]});
+      addMsg('bot', reply);
       S.msgs++; S.streak++;
-      lsSet('db_msgs',S.msgs); lsSet('db_streak',S.streak); updateStats();
+      lsSet('db_msgs',S.msgs); lsSet('db_streak',S.streak);
+      updateStats();
     }
+
   } catch(e){
     typing?.remove();
     addMsg('bot',`⚠️ <strong>Connection error:</strong> ${e.message}`);
     if(!isOpener && retryCount===0) S.hist.pop();
   }
-  S.busy=false; if(sendBtn) sendBtn.disabled=false;
+
+  S.busy=false;
+  document.getElementById('sendBtn').disabled=false;
 }
 
-// ═══════════════════════════════════════════════ CHAT HELPERS
-function addMsg(role, html){
-  const win = document.getElementById('chatWin');
-  if(!win) return;
-  const d = document.createElement('div');
-  d.className = 'msg ' + role;
-  const av = role==='bot' ? (MODES[S.mode]?.icon||'🤖') : '👤';
-  d.innerHTML = `<div class="avatar">${av}</div><div class="bubble">${fmt(html)}</div>`;
-  win.appendChild(d);
-  win.scrollTop = win.scrollHeight;
-}
-
-function fmt(t){
-  if(t.includes('<strong>')||t.includes('<br>')) return t;
-  t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-  t=t.replace(/\*([\wäöüÄÖÜß\-\s]{1,30}?)\*/g,'<span class="vocab">$1</span>');
-  t=t.replace(/➤ \d\..*?(?=\n|$)/g, m=>`<span class="choice">${m}</span>`);
-  t=t.replace(/✓(.*?)(?=\n|$)/g,'<span class="correct">✓$1</span>');
-  t=t.replace(/\n/g,'<br>');
-  return t;
-}
-
-function showTyping(){
-  const win = document.getElementById('chatWin');
-  if(!win) return {remove:()=>{}};
-  const d = document.createElement('div');
-  d.className = 'typing';
-  d.innerHTML = `<div class="avatar" style="background:linear-gradient(135deg,rgba(233,185,73,0.15),rgba(233,185,73,0.05));border-color:rgba(233,185,73,0.2)">${MODES[S.mode]?.icon||'🤖'}</div><div class="typing-bub"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
-  win.appendChild(d); win.scrollTop=win.scrollHeight;
-  return d;
-}
-
-function renderChips(){
-  const bar = document.getElementById('chipsRow');
-  if(!bar) return;
-  bar.innerHTML = (LV[S.lv]?.chips||[]).map(c=>
-    `<button class="chip" onclick="setIn('${c.replace(/'/g,"\\'")}')">${c}</button>`).join('');
-}
-
-function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} }
-function grow(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,130)+'px'; }
-function setIn(t){ const ta=document.getElementById('msgInput'); if(ta){ta.value=t;ta.focus();grow(ta);} }
-
-// ═══════════════════════════════════════════════ SEND
-async function sendMsg(){
-  if(S.busy) return;
-  const ta = document.getElementById('msgInput');
-  if(!ta) return;
-  const txt = ta.value.trim();
-  if(!txt) return;
-  ta.value=''; grow(ta);
-  document.getElementById('homeEl')?.remove();
-
-  // Smart mode detection
-  const detected = detectMode(txt);
-  if(detected && detected !== S.mode){
-    setMode(detected, true); // silent switch
-    toast(`✨ Switched to ${MODES[detected].title} mode`);
-    // If switched to news/tech, go to that panel instead
-    if(detected==='news'||detected==='tech'){
-      addMsg('user', txt);
-      addMsg('bot', `Switching to ${MODES[detected].title} — loading real headlines for you!`);
-      setTimeout(()=>setMode(detected), 800);
-      return;
-    }
+// ══════════════════════════════════════════════════════════ INIT
+function init(){
+  // Restore key
+  if(S.key){
+    document.getElementById('apiIn').value=S.key.slice(0,12)+'…';
+    document.getElementById('apiDot').classList.add('ok');
   }
-
-  addMsg('user', txt);
-  await callGemini(txt, false);
+  setLevel(S.lv,true);
+  setMode('free',true);
+  buildHomeGrid();
+  updateStats();
 }
 
-// ═══════════════════════════════════════════════ MODE / LEVEL
+function buildHomeGrid(){
+  const grid = document.getElementById('homeGrid');
+  const items = [
+    {m:'free',icon:'💬',name:'Free Chat',desc:'Open conversation tutor, any topic'},
+    {m:'news',icon:'📰',name:'News Mode',desc:'Learn German through real headlines'},
+    {m:'tech',icon:'💻',name:'Tech & Science',desc:'AI, space, discoveries in German'},
+    {m:'exam',icon:'📝',name:'Exam Practice',desc:'Goethe & Telc format exercises'},
+    {m:'game',icon:'🎮',name:'Story Game',desc:'Adventure through German cities'},
+    {m:'vocab',icon:'📚',name:'Vocabulary',desc:'Flashcards, drills, word families'},
+  ];
+  grid.innerHTML = items.map(i=>`
+    <div class="hcard" onclick="setMode('${i.m}');begin()">
+      <span class="hcard-icon">${i.icon}</span>
+      <div class="hcard-name">${i.name}</div>
+      <div class="hcard-desc">${i.desc}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════ LEVEL
 function setLevel(lv, silent){
   S.lv=lv; lsSet('db_lv',lv);
   document.querySelectorAll('.lvl').forEach(b=>b.classList.toggle('on',b.dataset.lv===lv));
   document.getElementById('prog').style.width=LV[lv].prog+'%';
   document.getElementById('stLv').textContent=lv;
-  const ta=document.getElementById('msgInput');
-  if(ta) ta.placeholder=LV[lv].ph;
+  document.getElementById('msgInput').placeholder=LV[lv].ph;
   renderChips();
-  if(!silent){ S.hist=[]; toast('Level → '+lv+' · '+LV[lv].en); }
+  if(!silent){S.hist=[];toast('Level → '+lv+' · '+LV[lv].en)}
 }
 
+// ══════════════════════════════════════════════════════════ MODE
 function setMode(m, silent){
   S.mode=m; S.sub=null; S.hist=[];
   document.querySelectorAll('.mcard').forEach(c=>c.classList.toggle('on',c.dataset.m===m));
-
-  const isNewsMode = (m==='news'||m==='tech');
-
-  if(isNewsMode){
-    renderNewsPanel(m);
+  const M=MODES[m];
+  document.getElementById('mIcon').textContent=M.icon;
+  document.getElementById('mTitle').textContent=M.title;
+  document.getElementById('mSub').textContent=M.sub;
+  const sp=document.getElementById('srcPill');
+  sp.style.display=M.src?'flex':'none';
+  if(M.src) updateSrcLabel();
+  // submodes
+  const sb=document.getElementById('subBar');
+  if(M.subs){
+    sb.style.display='flex';
+    sb.innerHTML=M.subs.map((s,i)=>`
+      <button class="subbtn${i===0?' on':''}" onclick="setSub('${s}',this)">${s}</button>`).join('');
+    S.sub=M.subs[0];
   } else {
-    // Restore chat UI if coming from news
-    const col = document.getElementById('mainCol');
-    const hasNewsPanel = !!document.getElementById('newsPanel');
-    if(hasNewsPanel) restoreChatUI();
-
-    // Update mode bar
-    const M = MODES[m];
-    const mIcon = document.getElementById('mIcon');
-    const mTitle = document.getElementById('mTitle');
-    const mSub = document.getElementById('mSub');
-    const srcPill = document.getElementById('srcPill');
-    const subBar = document.getElementById('subBar');
-
-    if(mIcon) mIcon.textContent = M.icon;
-    if(mTitle) mTitle.textContent = M.title;
-    if(mSub) mSub.textContent = M.sub;
-    if(srcPill) srcPill.style.display = 'none';
-
-    if(M.subs && subBar){
-      subBar.style.display='flex';
-      subBar.innerHTML=M.subs.map((s,i)=>
-        `<button class="subbtn${i===0?' on':''}" onclick="setSub('${s}',this)">${s}</button>`).join('');
-      S.sub=M.subs[0];
-    } else if(subBar){
-      subBar.style.display='none';
-    }
-
-    // Special welcome for correct mode
-    if(m==='correct'){
-      const win = document.getElementById('chatWin');
-      if(win){
-        win.innerHTML=`
-          <div class="home" style="margin:auto">
-            <div class="home-emblem">✏️</div>
-            <h2 class="home-title" style="font-size:26px">Text Correction</h2>
-            <p class="home-sub">Paste any German text below and I'll correct it, explain every mistake, and give you a practice exercise.</p>
-          </div>`;
-      }
-      const ta=document.getElementById('msgInput');
-      if(ta) ta.placeholder='Paste your German text here to correct…';
-    }
+    sb.style.display='none';
   }
-
   renderChips();
-  if(!silent) toast('Mode → '+(MODES[m]?.title||m));
+  if(!silent) toast('Mode → '+M.title);
 }
 
 function setSub(s,btn){
@@ -1311,129 +1447,251 @@ function setSub(s,btn){
   btn.classList.add('on');
 }
 
-// ═══════════════════════════════════════════════ BEGIN
-function begin(){
-  document.getElementById('homeEl')?.remove();
-  const openers={
-    free:{A1:'Hallo! Ich bin bereit zu lernen!',A2:'Hallo! Ich möchte mein Deutsch verbessern.',B1:'Guten Tag! Ich möchte auf B1-Niveau üben.',B2:'Guten Tag. Ich möchte mein B2-Niveau verbessern.',C1:'Guten Tag. Ich arbeite an akademischem Deutsch.',C2:'Guten Tag. Ich möchte auf höchstem Niveau diskutieren.'},
-    exam:{A1:'Ich möchte die Goethe A1-Prüfung üben!',A2:'Bereite mich auf die Goethe A2-Prüfung vor.',B1:'Starte eine B1-Prüfungssimulation.',B2:'Starte eine vollständige B2-Prüfungssimulation.',C1:'Ich möchte C1-Prüfungsaufgaben üben.',C2:'Simuliere eine C2-GDS-Prüfung.'},
-    game:{A1:'Starte das Wohnungs-Abenteuer!',A2:'Beginne das Supermarkt-Abenteuer!',B1:'Starte das Bahnhof-Abenteuer.',B2:'Starte das Büro-Abenteuer.',C1:'Beginne das Universitäts-Abenteuer.',C2:'Starte das nächtliche Stadtabenteuer.'},
-    vocab:{A1:'Starte A1-Vokabeltraining! Karteikarten bitte.',A2:'Hilf mir mit A2-Vokabeln.',B1:'Ich möchte B1-Wortschatz erweitern.',B2:'Arbeite mit mir an B2-Wortschatz.',C1:'Trainiere meinen akademischen Wortschatz.',C2:'Arbeite mit mir an literarischem Wortschatz.'},
-    correct:{A1:'Ich möchte mein Deutsch verbessern. Hier ist mein Text: "Ich bin gehen in die Schule gestern."',A2:'Korrigiere bitte diesen Text: "Ich haben heute das Buch gelesen und es war sehr schön."',B1:'Bitte korrigiere: "Wenn ich mehr Zeit hätte, würde ich öfter Deutsch lernen und meine Kenntnisse verbessert."',B2:'Korrigiere diesen Text: "Die Klimakrise ist eine der größten Herausforderungen, womit die Menschheit konfrontiert sind."',C1:'Überprüfe meinen Aufsatz: "Die Digitalisierung hat zahlreiche Auswirkungen auf die Gesellschaft, wobei sowohl Chancen als auch Risiken entstanden haben, die es zu berücksichtigen gilt."',C2:'Analysiere meinen Text stilistisch: "In Anbetracht der gegenwärtigen geopolitischen Lage erscheint es geboten, die diplomatischen Bemühungen zu intensivieren."'},
-  };
-  const op = (openers[S.mode]||openers.free)[S.lv] || 'Hallo! Ich bin bereit zu lernen.';
-  callGemini(op, true);
+function updateSrcLabel(){
+  const m=S.mode;
+  let n=0;
+  if(m==='news') n=S.newsSrc.length;
+  else if(m==='tech') n=S.techSrc.length;
+  else n=1;
+  document.getElementById('srcLabel').textContent=n+' source'+(n!==1?'s':'')+' active';
 }
 
-// ═══════════════════════════════════════════════ INIT / API KEY / STATS
+// ══════════════════════════════════════════════════════════ API KEY
 function saveKey(){
   const v=document.getElementById('apiIn').value.trim();
   if(!v||v.includes('…')) return;
   S.key=v; lsSet('db_key',v);
   document.getElementById('apiIn').value=v.slice(0,12)+'…';
   document.getElementById('apiDot').classList.add('ok');
-  toast('✅ API key saved!');
+  toast('✅ Gemini API key saved!');
+}
+
+// ══════════════════════════════════════════════════════════ CHAT
+function begin(){
+  document.getElementById('homeEl')?.remove();
+  const openers={
+    free:{A1:"Hallo! Ich bin bereit zu lernen!",A2:"Hallo! Ich möchte mein Deutsch verbessern.",B1:"Guten Tag! Ich möchte auf B1-Niveau Deutsch üben.",B2:"Guten Tag. Ich möchte mein B2-Niveau weiter verbessern.",C1:"Guten Tag. Ich arbeite an meiner akademischen Ausdrucksweise.",C2:"Guten Tag. Ich möchte auf höchstem Niveau diskutieren."},
+    news:{A1:"Ich möchte heute Nachrichten auf Deutsch lesen!",A2:"Können wir aktuelle Nachrichten auf Deutsch besprechen?",B1:"Ich möchte aktuelle Nachrichten auf Deutsch lesen und analysieren.",B2:"Lass uns aktuelle Nachrichten auf B2-Niveau diskutieren.",C1:"Ich möchte aktuelle Artikel auf C1-Niveau analysieren.",C2:"Bitte bring mir einen anspruchsvollen Artikel zur Diskussion."},
+    tech:{A1:"Ich möchte über Technologie auf Deutsch lernen — einfach bitte!",A2:"Können wir über Technologie auf Deutsch sprechen?",B1:"Ich möchte Tech-Themen auf Deutsch besprechen.",B2:"Analysieren wir aktuelle Technologiethemen auf B2-Niveau.",C1:"Diskutieren wir komplexe Tech-Themen auf C1-Niveau.",C2:"Bitte diskutiere mit mir über Technologie und Gesellschaft."},
+    exam:{A1:"Ich möchte mich auf die Goethe A1-Prüfung vorbereiten!",A2:"Bitte bereite mich auf die Goethe A2-Prüfung vor.",B1:"Starte eine B1-Prüfungssimulation. Beginne mit Teil 1.",B2:"Starte eine vollständige B2-Prüfungssimulation.",C1:"Ich möchte C1-Prüfungsaufgaben üben.",C2:"Simuliere eine C2-GDS-Prüfung mit mir."},
+    game:{A1:"Ich möchte das Spiel in der Wohnung starten!",A2:"Beginne das Supermarkt-Abenteuer!",B1:"Starte das Bahnhof-Abenteuer.",B2:"Starte das Büro-Abenteuer.",C1:"Beginne das Universitäts-Abenteuer.",C2:"Starte das nächtliche Stadtabenteuer."},
+    vocab:{A1:"Ich möchte A1-Vokabeln lernen! Starte Karteikarten.",A2:"Hilf mir mit A2-Vokabeln. Starte ein Training.",B1:"Ich möchte meinen B1-Wortschatz erweitern.",B2:"Lass uns mit B2-Wortschatz arbeiten.",C1:"Trainiere meinen akademischen Wortschatz auf C1.",C2:"Arbeite mit mir an literarischem Deutsch-Wortschatz."},
+  };
+  const op=(openers[S.mode]||openers.free)[S.lv];
+  callGemini(op,true);
+}
+
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function grow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,130)+'px';}
+function setIn(t){const ta=document.getElementById('msgInput');ta.value=t;ta.focus();grow(ta);}
+
+async function sendMsg(){
+  if(S.busy) return;
+  const ta=document.getElementById('msgInput');
+  const txt=ta.value.trim(); if(!txt) return;
+  ta.value=''; grow(ta);
+  document.getElementById('homeEl')?.remove();
+  addMsg('user',txt);
+  await callGemini(txt,false);
+}
+
+function addMsg(role,html){
+  const win=document.getElementById('chatWin');
+  const d=document.createElement('div');
+  d.className='msg '+role;
+  const av=role==='bot'?MODES[S.mode]?.icon||'🤖':'👤';
+  d.innerHTML=`<div class="avatar">${av}</div><div class="bubble">${fmt(html)}</div>`;
+  win.appendChild(d);
+  win.scrollTop=win.scrollHeight;
+}
+
+function fmt(t){
+  // already-html content passes through; plain text gets formatted
+  if(t.includes('<strong>')||t.includes('<br>')) return t; // pre-formatted
+  t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  t=t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  t=t.replace(/\*([\wäöüÄÖÜß\-\s]{1,30}?)\*/g,'<span class="vocab">$1</span>');
+  t=t.replace(/\[TIPP:(.*?)\]/gs,'<span class="tipp">$1</span>');
+  t=t.replace(/(➤ \d\..*?)(?=\n|$)/g,'<span class="choice">$1</span>');
+  t=t.replace(/✓(.*?)(?=\n|$)/g,'<span class="correct">✓$1</span>');
+  t=t.replace(/\n/g,'<br>');
+  return t;
+}
+
+function showTyping(){
+  const win=document.getElementById('chatWin');
+  const d=document.createElement('div');
+  d.className='typing';
+  d.innerHTML=`<div class="avatar" style="background:linear-gradient(135deg,rgba(233,185,73,0.15),rgba(233,185,73,0.05));border-color:rgba(233,185,73,0.2)">${MODES[S.mode]?.icon||'🤖'}</div>
+  <div class="typing-bub"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  win.appendChild(d);win.scrollTop=win.scrollHeight;
+  return d;
+}
+
+function renderChips(){
+  const bar=document.getElementById('chipsRow');
+  bar.innerHTML=(LV[S.lv]?.chips||[]).map(c=>
+    `<button class="chip" onclick="setIn('${c.replace(/'/g,"\\'")}')">  ${c}</button>`).join('');
 }
 
 function updateStats(){
-  const m=document.getElementById('stMsgs');
-  const s=document.getElementById('stStr');
-  if(m) m.textContent=S.msgs;
-  if(s) s.textContent=S.streak+' 🔥';
+  document.getElementById('stMsgs').textContent=S.msgs;
+  document.getElementById('stStr').textContent=S.streak+' 🔥';
 }
 
-function buildHomeGrid(){
-  const grid=document.getElementById('homeGrid');
-  if(!grid) return;
-  const items=[
-    {m:'free',icon:'💬',name:'Free Chat',desc:'Open conversation, any topic'},
-    {m:'news',icon:'📰',name:'Real News',desc:'Actual headlines + German lessons'},
-    {m:'tech',icon:'💻',name:'Tech & Science',desc:'Technology news in German'},
-    {m:'exam',icon:'📝',name:'Exam Practice',desc:'Goethe & Telc format'},
-    {m:'game',icon:'🎮',name:'Story Game',desc:'Adventure through German cities'},
-    {m:'correct',icon:'✏️',name:'Text Correction',desc:'Paste text, get corrections'},
-  ];
-  grid.innerHTML=items.map(i=>`
-    <div class="hcard" onclick="setMode('${i.m}');begin()">
-      <span class="hcard-icon">${i.icon}</span>
-      <div class="hcard-name">${i.name}</div>
-      <div class="hcard-desc">${i.desc}</div>
-    </div>`).join('');
+// ══════════════════════════════════════════════════════════ DRAWER
+function openDrawer(){
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  renderDrawer();
 }
-
-function init(){
-  if(S.key){
-    document.getElementById('apiIn').value=S.key.slice(0,12)+'…';
-    document.getElementById('apiDot').classList.add('ok');
-  }
-  setLevel(S.lv,true);
-  buildHomeGrid();
-  renderChips();
-  updateStats();
+function closeDrawer(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
 }
-
-// ═══════════════════════════════════════════════ DRAWER
-function openDrawer(){ document.getElementById('overlay').classList.add('open'); document.getElementById('drawer').classList.add('open'); renderDrawer(); }
-function closeDrawer(){ document.getElementById('overlay').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); }
 
 function renderDrawer(){
-  const body=document.getElementById('drawerBody');
+  const m=S.mode, body=document.getElementById('drawerBody');
   let h='';
 
-  h+=`<div class="cfg-sec"><div class="cfg-title">📰 News Sources (RSS Feeds)</div>`;
-  RSS_FEEDS.forEach(s=>{
-    const on=S.newsSrc.includes(s.id);
-    h+=`<div class="src-item${on?' on':''}" onclick="drawerToggleSrc('${s.id}','news',this)">
-      <div class="src-chk">${on?'✓':''}</div>
-      <div><span class="src-name">${s.name}</span><span class="src-note">${s.topic}</span></div>
-      <span class="src-lang">${s.lang}</span></div>`;
-  });
-  h+=`</div>`;
-
-  h+=`<div class="cfg-sec"><div class="cfg-title">💻 Tech Sources</div>`;
-  TECH_SRC.forEach(s=>{
-    const on=S.techSrc.includes(s.id);
-    h+=`<div class="src-item${on?' on':''}" onclick="drawerToggleSrc('${s.id}','tech',this)">
-      <div class="src-chk">${on?'✓':''}</div>
-      <div><span class="src-name">${s.name}</span><span class="src-note">${s.topic}</span></div>
-      <span class="src-lang">${s.lang}</span></div>`;
-  });
-  h+=`</div>`;
-
-  h+=`<div class="cfg-sec"><div class="cfg-title">📏 Lines Per Article</div>
-    <div class="slider-wrap">
-      <div class="slider-top"><span>Sentences used for practice per article</span><span class="slider-val" id="linesDisp">${S.lines}</span></div>
-      <input type="range" min="1" max="8" value="${S.lines}"
-        oninput="S.lines=+this.value;lsSet('db_lines',this.value);document.getElementById('linesDisp').textContent=this.value">
+  // General toggles
+  h+=`<div class="cfg-sec">
+    <div class="cfg-title">General</div>
+    <div class="toggle-row">
+      <span class="toggle-label">Auto-translate to English (A1/A2)</span>
+      <div class="tog${S.autoTr?' on':''}" onclick="toggleCfg('autoTr',this)"></div>
     </div>
   </div>`;
 
-  h+=`<div class="info-note">
-    News feeds are fetched live from real RSS sources. DW, BBC, Spiegel and others are updated every few hours.<br><br>
-    <strong>For exam practice:</strong> Get free official materials at <strong>goethe.de → Prüfungen → Übungstest</strong> and paste them in the chat.
-  </div>`;
+  // News / Tech sources
+  if(m==='news'||m==='tech'){
+    const srcs=m==='news'?NEWS_SRC:TECH_SRC;
+    const sel=m==='news'?S.newsSrc:S.techSrc;
+    h+=`<div class="cfg-sec">
+      <div class="cfg-title">${m==='news'?'📰 News Sources':'💻 Tech & Science Sources'}</div>
+      ${srcs.map(s=>`
+      <div class="src-item${sel.includes(s.id)?' on':''}" onclick="toggleSrc('${s.id}','${m}',this)">
+        <div class="src-chk">${sel.includes(s.id)?'✓':''}</div>
+        <div class="src-info">
+          <span class="src-name">${s.name}</span>
+          <span class="src-note">${s.note}</span>
+        </div>
+        <span class="src-lang">${s.lang}</span>
+      </div>`).join('')}
+    </div>
+    <div class="cfg-sec">
+      <div class="cfg-title">📏 Lines Per Article</div>
+      <div class="slider-wrap">
+        <div class="slider-top">
+          <span>Sentences used for practice per article</span>
+          <span class="slider-val" id="linesDisp">${S.lines}</span>
+        </div>
+        <input type="range" min="1" max="10" value="${S.lines}"
+          oninput="S.lines=+this.value;lsSet('db_lines',this.value);document.getElementById('linesDisp').textContent=this.value">
+      </div>
+    </div>
+    <div class="cfg-sec">
+      <div class="cfg-title">🔗 Custom RSS / Text</div>
+      <label style="font-size:11px;color:var(--text3)">Optional: paste any RSS URL or text excerpt</label>
+      <input class="cfg-input" type="text" placeholder="https://example.com/rss.xml"
+        value="${S.customTxt}"
+        onchange="S.customTxt=this.value;lsSet('db_cTxt',this.value)">
+    </div>`;
+  }
 
-  h+=`<button class="apply-btn" onclick="closeDrawer();toast('✅ Settings saved')">✓ Apply Settings</button>`;
+  // Exam source
+  if(m==='exam'){
+    h+=`<div class="cfg-sec">
+      <div class="cfg-title">📝 Exam Material Source</div>
+      <div class="exam-grid">
+        ${EXAM_SRC.map(s=>`
+        <div class="exam-card${S.examSrc===s.id?' on':''}" onclick="setExamSrc('${s.id}')">
+          <span class="exam-card-icon">${s.icon}</span>
+          <div class="exam-card-name">${s.name}</div>
+          <div class="exam-card-note">${s.note}</div>
+        </div>`).join('')}
+      </div>
+      <div id="customExamWrap" style="display:${S.examSrc==='custom'?'block':'none'}">
+        <label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Paste text or URL to practice with:</label>
+        <textarea class="cfg-input" rows="4"
+          placeholder="Paste a reading text, exam question, or article URL here…"
+          onchange="S.customTxt=this.value;lsSet('db_cTxt',this.value)">${S.customTxt}</textarea>
+      </div>
+      <div class="info-note">
+        DeutschBot creates <strong>original questions in official Goethe/Telc format</strong>.
+        For free official practice materials visit:<br>
+        <strong>goethe.de → Prüfungen → Übungstest</strong><br>
+        <strong>telc.net → Übungsmaterialien</strong><br>
+        Paste those texts into Custom Text above.
+      </div>
+    </div>`;
+  }
+
+  // Session settings (other modes)
+  if(m==='free'||m==='game'||m==='vocab'){
+    h+=`<div class="cfg-sec">
+      <div class="cfg-title">Session Settings</div>
+      <div class="toggle-row">
+        <span class="toggle-label">Show grammar tips in chat</span>
+        <div class="tog on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Save vocabulary automatically</span>
+        <div class="tog on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Strict error correction</span>
+        <div class="tog" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>`;
+  }
+
+  h+=`<button class="apply-btn" onclick="applyAndStart()">✓ Apply & Start Session</button>`;
   body.innerHTML=h;
 }
 
-function drawerToggleSrc(id, mode, el){
-  const arr=mode==='tech'?S.techSrc:S.newsSrc;
-  const key=mode==='tech'?'db_tSrc':'db_nSrc';
+function toggleSrc(id,m,el){
+  const arr=m==='news'?S.newsSrc:S.techSrc;
+  const key=m==='news'?'db_nSrc':'db_tSrc';
   const i=arr.indexOf(id);
   if(i>=0) arr.splice(i,1); else arr.push(id);
   lsSet(key,JSON.stringify(arr));
+  updateSrcLabel();
   el.classList.toggle('on',arr.includes(id));
   el.querySelector('.src-chk').textContent=arr.includes(id)?'✓':'';
 }
 
-// ═══════════════════════════════════════════════ TOAST
+function setExamSrc(id){
+  S.examSrc=id; lsSet('db_eSrc',id);
+  document.querySelectorAll('.exam-card').forEach(c=>{
+    const isOn=c.querySelector('.exam-card-name').textContent===EXAM_SRC.find(s=>s.id===id)?.name;
+    c.classList.toggle('on',isOn);
+  });
+  const wrap=document.getElementById('customExamWrap');
+  if(wrap) wrap.style.display=id==='custom'?'block':'none';
+}
+
+function toggleCfg(key,el){
+  S[key]=!S[key]; lsSet('db_'+key,S[key]);
+  el.classList.toggle('on',S[key]);
+}
+
+function applyAndStart(){
+  closeDrawer();
+  S.hist=[];
+  toast('✅ Sources saved — starting new session');
+  setTimeout(()=>begin(),300);
+}
+
+// ══════════════════════════════════════════════════════════ TOAST
 function toast(msg,dur=2800){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),dur);
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove('show'),dur);
 }
 
+// ══════════════════════════════════════════════════════════ START
 init();
 </script>
 </body>
