@@ -1,0 +1,22 @@
+# ── DeutschBot netlify.toml ─────────────────────────────────────────────────
+[build]
+  publish = "."
+  command = "node inject-key.js"   # optional build step for key injection
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://generativelanguage.googleapis.com https://api.rss2json.com https://feed2json.org https://en.wiktionary.org https://de.wiktionary.org https://hnrss.org https://feeds.bbci.co.uk https://rss.dw.com https://www.tagesschau.de https://huggingface.co https://openai.com https://rss.arxiv.org https://www.nasa.gov;"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
